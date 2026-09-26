@@ -6,3 +6,6 @@
 # Files over GitHub's 100 MB limit are downloaded into _large/ and not pushed;
 # re-download them locally with download_data.py.
 */data/_large/
+
+# Unpacked copies of the zip archives (the zips themselves are committed)
+*/data/_unzipped/

@@ -1,0 +1,448 @@
+# SE Asian peatland water-table data: what was downloaded
+
+Checked 2026-09-26. Periods, time steps, counts and value ranges below were measured from the downloaded files; methods and uses come from the papers. `INDEX.md` is the original search table; where they disagree, this file is the checked version (see *Corrections*).
+
+WTD sign convention: unless stated otherwise, negative = water table below the peat surface. Value ranges are min / mean / max.
+
+## At a glance
+
+| ID | Dataset | Status | WTD series in the download | Period (from files) | Resolution |
+|---|---|---|---|---|---|
+| A1 | Mendaram peat dome (undrained), Brunei | Downloaded | 4 series | 2012-02-06 to 2013-01-30 | 20 min |
+| A2 | Mendaram water table + chamber CO2, Brunei | Downloaded | 4 series | 2012-02-06 to 2015-02-06 | 1 h; 20 min |
+| A3 | Palangkaraya UF / DF / DB flux towers, Central Kalimantan | Downloaded | 3 series | 2001-11-28 to 2019-12-11 | 30 min |
+| A4 | Palangkaraya daily groundwater level (UF, DF) | Downloaded | 2 series | 2013-01-01 to 2018-12-31 | 1 d |
+| A5 | FLUXNET-CH4 ID-Pag (Palangkaraya undrained forest) | Needs your login (FLUXNET) | none | - | - |
+| A6 | FLUXNET-CH4 MY-MLM (Maludam National Park), Sarawak | Needs your login (FLUXNET) | none | - | - |
+| A7 | Kampar Peninsula intact vs degraded peatland, Riau | Downloaded | 2 series | 2017-06-01 to 2020-05-31 | 1 d |
+| A8 | Kampar Peninsula Acacia plantation / degraded / intact, Riau | Downloaded | 1 series | 2017-06-01 to 2022-05-30 | 1 d |
+| A9 | 8 BRGM automatic stations, Batanghari (Jambi) and Kubu Raya (West Kalimantan) | Downloaded | 8 series | 2018-04-08 to 2019-12-31 | 1 d |
+| A11 | 48 smallholder plots (SUSTAINPEAT), Selangor and West/Central Kalimantan | Downloaded | 1 series | 2018-03-21 to 2019-04-01 | Monthly visits (20-32 dates per region) |
+| A12 | Sebungan / Sabaju oil-palm flux towers, Sarawak | Embargoed / on request | none | - | - |
+| A13-14 | CIFOR Central Kalimantan: primary forest vs oil palm | Public, but server unreachable from the cloud | none | - | - |
+| B1 | SiPALAGA water-level network (BRGM), Indonesia | No public data | none | - | - |
+| B2 | SiMATAG-0.4m compliance points (KLHK), Indonesia | No public data | none | - | - |
+| C1 | South Sumatra rewetting trial (257 dams) | Embargoed / on request | none | - | - |
+| C3 | Pulau Padang land-use units, Riau | No public data | none | - | - |
+| C5 | Muara Siran undrained peatland, East Kalimantan | Downloaded (part of the data) | 2 series | 2022-10-27 to 2023-09-23 | ~3 visits/month (36 dates) |
+| C6 | Sarawak forest-to-oil-palm conversion flux tower | Embargoed / on request | none | - | - |
+| C7 | Maludam National Park, 4 forest-type plots, Sarawak | No public data | none | - | - |
+| C8-9 | North Selangor peat swamp forest, Malaysia | Downloaded (part of the data) | 3 series | 2018-08-15 to 2020-02-06 | 1 d (12:00 reading); 5 occasions |
+| C10-11 | Time-lapse camera WTD, Central Kalimantan | Embargoed / on request | none | - | - |
+| C12 | Badas burnt vs intact peat swamp forest, Brunei | No public data | none | - | - |
+| D1 | SE Asia forested-peatland WTD model maps | Downloaded | 3 grids | 2000 to 2024 | 0.1 deg grid |
+
+No public continuous WTD series was found for Thailand (Kuan Kreng), Vietnam (U Minh), the Philippines (Leyte Sab-a, Agusan) or Sabah (Klias); these rows of the index have no folder.
+
+## What you still need to do
+
+1. **FLUXNET-CH4 (A5, A6)**: sign in at fluxnet.org, request the FLUXNET-CH4 files for ID-Pag and MY-MLM (CC-BY-4.0), put the zips in `A5_.../data/` and `A6_.../data/`, commit them, and tell me; I will check them and update this summary.
+2. **CIFOR (A13-14)**: data.cifor.org refused connections from the cloud. On your computer run `python3 download_data.py A13`.
+3. **Papers**: PDFs are not committed (public repository). Run `python3 download_papers.py`; links that publishers block for scripts are printed so you can save them from a browser.
+4. **Embargoed / on request**: A12, C1, C6, C10-11 (see the next section). No emails were sent.
+
+## Data availability check: papers whose data you cannot download
+
+| ID | Paper | What the paper says | Downloadable? |
+|---|---|---|---|
+| A4 | Ohkubo, Hirano & Kusin 2023, Journal of Hydrology 620 (probable companion paper, inferred) ([doi](https://doi.org/10.1016/j.jhydrol.2023.129523)) | Not read (ScienceDirect blocked). Link to this dataset is inferred from the same authors, sites and years, not confirmed. | Unknown |
+| A6 | Tang et al. 2020, Global Change Biology 26 ([doi](https://doi.org/10.1111/gcb.15332)) | Not read (closed access). | Partly (FLUXNET-CH4 2014-2015 only) |
+| A12 | McCalmont et al. 2021, Global Change Biology 27 ([doi](https://doi.org/10.1111/gcb.15544)) | "The data that support the findings of this study are available from the corresponding author upon reasonable request." | No |
+| A13-14 | Swails et al. 2019, Biogeochemistry 142 (the paper named in the index) ([doi](https://doi.org/10.1007/s10533-018-0519-x)) | Not read (closed access). | Unknown |
+| B1 | Mleczko et al. 2025, Remote Sensing of Environment (use case) ([doi](https://doi.org/10.1016/j.rse.2025.115009)) | Not read (ScienceDirect blocked). | Unknown |
+| C1 | Hooijer et al. 2024, Scientific Reports 14:10721 ([doi](https://doi.org/10.1038/s41598-024-60462-3)) | "The datasets analyzed during the study are available from the corresponding author on reasonable request." | No |
+| C3 | Ismail et al. 2021, Hydrology Research 52(6):1372 ([doi](https://doi.org/10.2166/nh.2021.062)) | Not read (IWA blocked automated access). | Unknown |
+| C5 | Asyhari et al. 2024, Scientific Reports 14 ([doi](https://doi.org/10.1038/s41598-024-62233-6)) | "All data that support the findings of this study are archived on 10.5281/zenodo.10427000." | Partly (manual water depth yes, hourly logger GWL no) |
+| C6 | Kiew et al. 2025, Agricultural and Forest Meteorology 378:110956 ([doi](https://doi.org/10.1016/j.agrformet.2025.110956)) | "The data utilized in this study are owned by the State Government of Sarawak. Access to these data is restricted and requires official approval from the government." | No |
+| C7 | Aeries et al. 2023, Advanced and Sustainable Technologies 2(2) ([doi](https://doi.org/10.58915/aset.v2i2.331)) | No data availability statement in the paper. | No |
+| C8-9 | Lo & Parish 2022, Archives of Agriculture Research and Technology 3 ([doi](https://doi.org/10.54026/aart/1029)) | Not read (publisher certificate expired). | Unknown |
+| C10-11 | Evans et al. 2021, Frontiers in Environmental Science 9:630752 ([doi](https://doi.org/10.3389/fenvs.2021.630752)) | "The raw data supporting the conclusions of this article will be made available by the authors, without undue reservation." | No (on request) |
+| C12 | Lupascu et al. 2020, Global Change Biology 26 ([doi](https://doi.org/10.1111/gcb.15195)) | Not read (closed access). | Unknown |
+
+## Corrections to INDEX.md
+
+| ID | Field | Index said | Checked |
+|---|---|---|---|
+| A1 | Water-level series | 4 wells (implied in one dataset) | 4 separate PANGAEA datasets (908201, 908206-908208), each with its own coordinates; 20-min steps |
+| A3 | DF coordinates | 'DF approx. same as DB' | DF 2.35 S, 114.04 E (Hirano 2024); Hirano 2014 gives 114.14 E |
+| A3 | Data link | figshare private link | Link works (article 23826825, one 16.5 MB zip); GWL is half-hourly, not 'at least daily' |
+| A6 | Period in FLUXNET-CH4 | 2011-2014 | FLUXNET-CH4 has 2014-2015 only; 2011-2014 is the paper's record |
+| A8 | Zenodo record | 7500659 | The paper cites 7728463 (v03); both downloaded, GWL identical |
+| A8 | WTD content | Kampar GWL for 3 sites | Only intact-site daily GWL is published; other sites only as annual means |
+| A12 | Availability | A/B | Not downloadable: Exeter files embargoed, paper says 'on request' |
+| A13-14 | Paper behind the CIFOR DOI | Swails 2019 | DATA.00061 is the replication data of Hergoualc'h et al. 2017 |
+| C5 | Availability | C (figures only) | Zenodo 10427000 (CC-BY) has manual water depth per chamber visit; hourly logger data not archived |
+| C8-9 | Availability | C (figures only) | Ledger 2023 supplement has manual and logger water tables and site coordinates |
+| C10-11 | Location | Central Kalimantan, South Sumatra | Central Kalimantan only |
+| D1 | Resolution | Daily, ~25 y | Download holds 10 summary GeoTIFFs (0.1 deg, 2000-2024); daily series only on request |
+
+## Dataset details
+
+### A1: Mendaram peat dome (undrained), Brunei
+
+- **Folder:** `A1_Mendaram_Cobb2019/`
+- **Status:** Downloaded
+- **Data source:** [PANGAEA collection](https://doi.org/10.1594/PANGAEA.908215); licence CC-BY-4.0
+- **Paper:** Cobb & Harvey 2019, Water Resources Research 55, [doi:10.1029/2019WR025411](https://doi.org/10.1029/2019WR025411). Access: Open (publisher author manuscript); Wiley blocks scripts, open in a browser.
+  - Data availability: Not read (Wiley blocked automated access). The PANGAEA README states the collection is the data used in this paper.
+- **How the paper used the data:** Four piezometers (Solinst Levelogger Edge, barometrically corrected, screened 1.30-1.45 m) logged water level every 20 min for a year, together with throughfall from four tipping-bucket gauges. Combined with the peat-surface Laplacian from the flowtube geometry, the water-level and throughfall series were used to fit hillslope-scale hydraulic conductivity (transmissivity) and specific yield as functions of water-table height, for a 'scalar' model that treats a peatland subcatchment as one storage unit. The fitted K and Sy knots are published as PANGAEA 908209 and 908210.
+- The PANGAEA metadata query lists only 4 children; the 4 water-level series (908201, 908206-908208) were found from the collection page and added.
+- README_Brunei_peat_swamp_data.pdf (dataset documentation, CC-BY) is downloaded but not committed because PDFs are git-ignored; download_data.py fetches it.
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `PANGAEA_908201.tab` |  | Piezometer 'mdm trail 6' | 4.365371, 114.353709 | Water level WL (m) | Yes: m relative to the peat-surface datum of Cobb et al. 2017; + = above surface | 2012-02-06 22:20 | 2013-01-30 02:40 | 20 min | 25790 | 0 % | -0.305 / -0.014 / 0.190 |
+| `PANGAEA_908206.tab` |  | Piezometer 'mdm trail 7' | 4.368423, 114.354127 | Water level WL (m) | Yes: as above | 2012-02-06 22:20 | 2013-01-30 02:40 | 20 min | 25790 | 0 % | -0.294 / -0.014 / 0.179 |
+| `PANGAEA_908207.tab` |  | Piezometer 'mdm trail 8' | 4.371105, 114.3547 | Water level WL (m) | Yes: as above | 2012-02-06 22:20 | 2013-01-30 02:40 | 20 min | 25789 | 0 % | -0.309 / -0.014 / 0.184 |
+| `PANGAEA_908208.tab` |  | Piezometer 'mdm trail 10' | 4.375604, 114.354962 | Water level WL (m) | Yes: as above | 2012-02-06 22:20 | 2013-01-30 02:40 | 20 min | 25790 | 0 % | -0.350 / -0.014 / 0.195 |
+| `PANGAEA_908214.tab` |  | Throughfall gauges (centroid of 4) | 4.369827, 114.353973 | Throughfall intensity (mm/h) | No | 2012-02-06 22:20 | 2013-01-30 02:40 | 20 min | 25790 |  |  |
+| `PANGAEA_908209.tab` |  | Dome (model result) | 4.369827, 114.353973 | Hydraulic conductivity K(WL) knots with 95% CI | WL is the x-axis |  |  | 3 knots |  |  |  |
+| `PANGAEA_908210.tab` |  | Dome (model result) | 4.369827, 114.353973 | Specific yield Sy(WL) knots with 95% CI | WL is the x-axis |  |  | 6 knots |  |  |  |
+| `PANGAEA_908211.tab` |  | Flowtube | 4.369827, 114.353973 | Flowtube area vs integrated normal gradient | No |  |  |  |  |  |  |
+| `README_Brunei_peat_swamp_data.pdf` |  |  |  | Dataset README (not committed; PDF) | No |  |  |  |  |  |  |
+
+### A2: Mendaram water table + chamber CO2, Brunei
+
+- **Folder:** `A2_Mendaram_Hoyt2019/`
+- **Status:** Downloaded
+- **Data source:** [Zenodo 3245335](https://doi.org/10.5281/zenodo.3245335); licence CC-BY-4.0
+- **Paper:** Hoyt et al. 2019, Global Change Biology 25, [doi:10.1111/gcb.14702](https://doi.org/10.1111/gcb.14702). Access: Preprint on HAL (hal-02333558) and DSpace@MIT; both block scripts, open in a browser.
+  - Data availability: Not read (full text blocked). The Zenodo record is titled 'Supplement to: Hoyt et al. (2019)'.
+- **How the paper used the data:** Automated chambers (root-cut to 30 cm, in sun and shade) measured peat CO2 efflux hourly. Mean daily heterotrophic respiration (Rhet) was linearly related to water-table depth and small and constant under flooding. That Rhet-WTD relationship, plus a DOC-WTD relationship, was applied to a 3-year, 20-min water-table record (Feb 2012 - Feb 2015) to upscale annual carbon export (Fig. 3). Period 1 (Jul-Nov 2012) data are in Fig. 2/S1, Period 2 (Nov 2013 - Mar 2014) in Figs. 4, 5, S2.
+- Site coordinates are not given in the files; the chambers are on the same Mendaram dome as A1 (about 4.37 N, 114.35 E).
+- Zip archives are committed as downloaded; unzip them locally (the cloud copy was unpacked only for inspection).
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `Data_Period_1_CO2Flux_WT_AirTemp_Rainfall.zip` | WaterTable_Period_1a.csv | Mendaram chambers | ~4.37, ~114.35 | WaterTable_Period_1a.csv: WT at chamber-measurement times | Yes: m; negative = below peat surface | 2012-07-13 16:37 | 2012-08-05 14:37 | 1 h | 549 | 0.4 % | -0.298 / -0.204 / -0.115 |
+| `Data_Period_1_CO2Flux_WT_AirTemp_Rainfall.zip` | WaterTable_Period_1b.csv | Mendaram chambers | ~4.37, ~114.35 | WaterTable_Period_1b.csv | Yes: m; negative = below peat surface | 2012-08-07 10:00 | 2012-11-23 23:40 | 20 min | 7818 | 0 % | -0.359 / -0.109 / 0.199 |
+| `Data_Period_1_CO2Flux_WT_AirTemp_Rainfall.zip` | CO2flux_Chamber*.csv (6 files) | Chambers 1 (sun), 2-4 (shade) | ~4.37, ~114.35 | Hourly CO2 flux (umol m-2 s-1); 1a: chambers 1, 4 (13 Jul - 5 Aug 2012); 1b: chambers 1-4 (7 Aug - 23 Nov 2012; ch. 2 ends 8 Oct) | No | 2012-07-13 | 2012-11-23 | 1 h |  |  |  |
+| `Data_Period_1_CO2Flux_WT_AirTemp_Rainfall.zip` | DailyMeans_Period_1b.csv |  | ~4.37, ~114.35 | Daily means of CO2 flux, air T and WT (day of year 219-327, 2012) | Yes (daily mean) | 2012-08-06 | 2012-11-22 | 1 d | 109 |  |  |
+| `Data_Period_1_CO2Flux_WT_AirTemp_Rainfall.zip` | AirTemp_Period_1extended.csv, RainDepth_Period_1.csv |  | ~4.37, ~114.35 | Air temperature (10 min, 6 Jun 2012 - 21 Feb 2013); rain depth (10 min, 13 Jul - 23 Nov 2012) | No | 2012-06-06 | 2013-02-21 | 10 min |  |  |  |
+| `Data_Period_2_PeatTemp_AirTemp_WT.zip` | WaterTable_Period_2.csv | Mendaram chambers | ~4.37, ~114.35 | WaterTable_Period_2.csv | Yes: m; negative = below peat surface | 2013-11-23 15:20 | 2014-03-23 14:00 | 20 min | 8628 | 0.1 % | -0.180 / 0.003 / 0.106 |
+| `Data_Period_2_PeatTemp_AirTemp_WT.zip` | AirTemp_Period_2.csv, PeatTemperature_Tidbits_Period_2.csv |  | ~4.37, ~114.35 | Air temperature (20 min); peat temperature at surface/10/25 cm, sun and shade (10 min) | No | 2013-11-24 | 2014-03-23 | 10-20 min |  |  |  |
+| `Flux_Upscaling.zip` | UpscalingTimeseries_3yrs.csv | Mendaram dome | ~4.37, ~114.35 | UpscalingTimeseries_3yrs.csv: WT + modelled Rhet (hollows, dome) + DOC export | Yes: m; negative = below peat surface | 2012-02-06 12:00 | 2015-02-06 11:40 | 20 min | 78901 | 0 % | -0.347 / -0.037 / 0.184 |
+| `Flux_Upscaling.zip` | Rhet_WT_Upscaling_Relationship.csv, DOC_WT_Upscaling_Relationship.csv |  |  | Rhet-WT and DOC-WT relationships used for upscaling (WT -0.4 to 0.2 m) | WT is the x-axis |  |  |  |  |  |  |
+
+### A3: Palangkaraya UF / DF / DB flux towers, Central Kalimantan
+
+- **Folder:** `A3_Palangkaraya_Hirano2024/`
+- **Status:** Downloaded
+- **Data source:** [figshare (link given in the paper)](https://figshare.com/s/6aefe20137486d0a6f62); licence CC BY 4.0
+- **Paper:** Hirano et al. 2024, Communications Earth & Environment 5:221, [doi:10.1038/s43247-024-01387-7](https://doi.org/10.1038/s43247-024-01387-7). Access: Gold OA (CC-BY); nature.com shows a bot check to scripts, open in a browser.
+  - Data availability: "The CO2 flux, meteorology, and groundwater level data that support the findings of this study are available on figshare [https://figshare.com/s/6aefe20137486d0a6f62]."
+- **How the paper used the data:** GWL was measured at a hollow next to each tower. The paper uses it (1) as a driver when gap-filling half-hourly NEE (marginal distribution sampling for daytime, a GWL look-up table for night-time), (2) to relate annual NEE, RE and GPP to annual mean GWL and to compare ENSO-drought, normal and wet years, and (3) to back-estimate monthly NEE from the 1997 canal excavation onward, using GWL estimated from a nearby record (Takahashi site, since 1993) and NEE-GWL regressions.
+- UF and DF GWL columns contain no missing values over 15 years, so they are probably gap-filled; the paper does not say.
+- Coordinates are from Hirano 2024; Hirano et al. 2014 gives DF as 2.35 S, 114.14 E instead of 114.04 E.
+- Flux columns (fNEE, fGPP, fRE) end in 2017; environmental data continue to Dec 2019 (UF) and Jan 2017 (DB).
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `CO2 flux data.zip` | UF_fluxdata230802.csv | UF: undrained forest (slightly drained by old logging ditches) | -2.32, 113.9 | Half-hourly fNEE, fGPP, fRE, H, LE, radiation, PPFD, T, RH, VPD, GWL, precipitation | Yes: m; negative = below peat surface (hollow) | 2004-07-10 00:30 | 2019-12-11 12:00 | 30 min | 270360 | 0 % | -1.413 / -0.185 / 0.306 |
+| `CO2 flux data.zip` | DF_fluxdata230802.csv | DF: forest drained by Mega Rice Project canal | -2.35, 114.04 | as UF | Yes: m; negative = below peat surface (hollow) | 2001-11-28 00:30 | 2017-06-06 11:00 | 30 min | 272134 | 0 % | -1.774 / -0.488 / 0.027 |
+| `CO2 flux data.zip` | DB_fluxdata230802.csv | DB: drained, repeatedly burned (1997, 2002, 2009, 2014, 2015) | -2.34, 114.04 | as UF | Yes: m; negative = below peat surface (hollow) | 2004-04-17 00:00 | 2017-01-01 00:00 | 30 min | 222817 | 0.7 % | -1.623 / -0.176 / 0.314 |
+| `CO2 flux data.zip` | Annual CO2 fluxes.csv | UF, DF, DB |  | Annual precipitation, mean GWL, RE, GPP, NEE, GPP0, Gs,ref per site | Yes (annual mean) | 2002 | 2017 | 1 year |  |  |  |
+
+### A4: Palangkaraya daily groundwater level (UF, DF)
+
+- **Folder:** `A4_Palangkaraya_DailyGWL/`
+- **Status:** Downloaded
+- **Data source:** [figshare 22321129](https://doi.org/10.6084/m9.figshare.22321129.v1); licence CC BY 4.0
+- **Paper:** Hirano et al. 2014, Global Change Biology 21 (methods reference cited by the record), [doi:10.1111/gcb.12653](https://doi.org/10.1111/gcb.12653). Access: Accepted manuscript (Hokkaido Univ. repository).
+  - Data availability: Not applicable (the dataset post-dates the paper; the record cites it only for methods).
+- **Paper:** Hirano et al. 2012, Global Change Biology 18 (methods reference), [doi:10.1111/j.1365-2486.2012.02793.x](https://doi.org/10.1111/j.1365-2486.2012.02793.x). Access: Closed.
+  - Data availability: Not applicable.
+- **Paper:** Ohkubo, Hirano & Kusin 2023, Journal of Hydrology 620 (probable companion paper, inferred), [doi:10.1016/j.jhydrol.2023.129523](https://doi.org/10.1016/j.jhydrol.2023.129523). Access: Free to read on ScienceDirect (bronze); blocks scripts.
+  - Data availability: Not read (ScienceDirect blocked). Link to this dataset is inferred from the same authors, sites and years, not confirmed.
+- **How the paper used the data:** GWL (distance between ground and water surface) was logged every 30 min with a water-level logger (Sensor Technik DL/N or Keller DCX-22) within 5 m of each tower (Hirano 2014 methods); this file gives daily means. The figshare record only cites the 2012/2014 methods papers. The 2013-2018 period matches Ohkubo et al. 2023 (J. Hydrol.), which studies transpiration and evaporation in these forests, but that link is my inference.
+- These daily values are essentially the daily mean of A3's half-hourly GWL: mean absolute difference 0.2 cm (UF, 1461 days) and 1.2 cm (DF, 1618 days). Use A3 if you need sub-daily data or the DB site.
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `DailyGWL.xlsx` | sheet UF | UF (undrained forest) | -2.32, 113.9 | Year, DOY, GWL (m) | Yes: m; negative = below peat surface | 2015-01-01 | 2018-12-31 | 1 d | 1461 | 0 % | -1.43 / -0.236 / 0.14 |
+| `DailyGWL.xlsx` | sheet DF | DF (drained forest) | -2.35, 114.04 | Year, DOY, GWL (m) | Yes: m; negative = below peat surface | 2013-01-01 | 2017-06-06 | 1 d | 1618 | 0 % | -1.62 / -0.466 / 0.00 |
+
+### A5: FLUXNET-CH4 ID-Pag (Palangkaraya undrained forest)
+
+- **Folder:** `A5_FLUXNET-CH4_ID-Pag_Sakabe2018/`
+- **Status:** Needs your login (FLUXNET)
+- **Data source:** [FLUXNET site page](https://fluxnet.org/sites/siteinfo/ID-Pag), [Data DOI](https://doi.org/10.18140/FLX/1669643); licence CC-BY-4.0 (FLUXNET-CH4 Community Product)
+- **Paper:** Sakabe et al. 2018, Global Change Biology 24, [doi:10.1111/gcb.14410](https://doi.org/10.1111/gcb.14410). Access: Free to read on Wiley (bronze); Wiley blocks scripts.
+  - Data availability: Not read (Wiley blocked automated access).
+- **How the paper used the data:** One year of eddy-covariance CH4 flux over the undrained forest (same tower as A3 UF). The forest was a small CH4 sink in the dry season and a source in the wet season, controlled by groundwater level; anaerobic incubations compared CH4 production in undrained, drained and burned soils (from the abstract).
+- FLUXNET site metadata: -2.3200, 113.9000, elevation 30 m, AsiaFlux, EBF; FLUXNET-CH4 years 2016-2017.
+- Whether the FLUXNET-CH4 file contains a WTD column for this site has to be checked after you download it.
+
+### A6: FLUXNET-CH4 MY-MLM (Maludam National Park), Sarawak
+
+- **Folder:** `A6_FLUXNET-CH4_MY-MLM_Tang2020/`
+- **Status:** Needs your login (FLUXNET)
+- **Data source:** [FLUXNET site page](https://fluxnet.org/sites/siteinfo/MY-MLM), [Data DOI](https://doi.org/10.18140/FLX/1669650); licence CC-BY-4.0 (FLUXNET-CH4 Community Product)
+- **Paper:** Tang et al. 2020, Global Change Biology 26, [doi:10.1111/gcb.15332](https://doi.org/10.1111/gcb.15332). Access: Closed.
+  - Data availability: Not read (closed access).
+- **How the paper used the data:** Eddy-covariance CO2 exchange over a peat swamp forest in 2011-2014: the forest was a net CO2 source every year (183-632 g C m-2 yr-1); path analysis identified vapour-pressure deficit, not water table, as the main driver of GPP and RE (from the abstract).
+- FLUXNET-CH4 covers only 2014-2015 for MY-MLM, not the 2011-2014 period of Tang 2020; the full record is held by the Sarawak Tropical Peat Research Institute.
+- FLUXNET site metadata: 1.4536, 111.1495, AsiaFlux, EBF. C7 (Aeries 2023) has 2011-2015 water-table loggers in the same national park.
+
+### A7: Kampar Peninsula intact vs degraded peatland, Riau
+
+- **Folder:** `A7_Kampar_Deshmukh2021/`
+- **Status:** Downloaded
+- **Data source:** [Zenodo 4835696](https://doi.org/10.5281/zenodo.4835696); licence CC-BY-4.0
+- **Paper:** Deshmukh et al. 2021, Nature Geoscience 14, [doi:10.1038/s41561-021-00785-2](https://doi.org/10.1038/s41561-021-00785-2). Access: Accepted manuscript (Word) on figshare 15073734.
+  - Data availability: "All data that support the findings of this study are archived on http://doi.org/10.5281/zenodo.4835696."
+- **How the paper used the data:** GWL was logged every 30 min (Solinst Levelogger 3001 in perforated PVC tubes anchored into the clay; 3 loggers at the intact site, 2 at the degraded site; datum = base of the hollows). Daily GWL is shown against cumulative rainfall and ET (Fig. 2) to explain drawdown in the 2019 positive-IOD/El Nino drought. NEE and CH4 are bin-averaged by GWL (Fig. 3, ED Fig. 2): the intact site approaches CO2 neutrality when hollows are flooded, while NEE at the degraded site is insensitive to GWL between -0.4 and -0.8 m. ED Fig. 3 compares GWL-NEE with literature.
+- The text reports degraded-site GWL for Oct 2016 - Sep 2020, but the published daily series (Fig. 2b) covers only Jun 2017 - May 2020.
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `Deshmukh_Fig2.xlsx` | Panel a | Intact peatland (IP) tower, mean of 3 loggers | 0.3952, 102.76455 | Daily GWL_IP and SD, cumulative rain, ET | Yes: m; negative = below hollow surface | 2017-06-01 | 2020-05-31 | 1 d | 1096 | 0 % | -0.781 / -0.274 / 0.188 |
+| `Deshmukh_Fig2.xlsx` | Panel b | Degraded peatland (DP) tower, mean of 2 loggers | 0.69949, 102.79331 | Daily GWL_DP and SD, cumulative rain, ET | Yes: as above | 2017-06-01 | 2020-05-31 | 1 d | 1096 | 0 % | -1.127 / -0.716 / -0.283 |
+| `Deshmukh_Fig2.xlsx` | Panels c, d | IP, DP |  | Daily cumulative NEE and CH4 with uncertainty | No | 2017-06-01 | 2020-05-31 | 1 d |  |  |  |
+| `Deshmukh_Fig1.xlsx` |  | Towers, subsidence poles, N2O points |  | Coordinates (DMS) | No |  |  |  |  |  |  |
+| `Deshmukh_Fig3.xlsx` |  | IP, DP |  | NEE and CH4 bin-averaged by GWL | GWL is the x-axis |  |  |  |  |  |  |
+| `Deshmukh_ED_Fig2.xlsx` |  | IP, DP |  | NEE, Reco, GPP by GWL bin; GPP-PPFD above/below a GWL threshold | GWL is the x-axis |  |  |  |  |  |  |
+| `Deshmukh_ED_Fig3.xlsx` |  | Literature sites |  | Compilation of GWL vs NEE from other studies | Yes (site means) |  |  |  |  |  |  |
+| `Deshmukh_ED_Fig1.xlsx` |  | IP, DP, Pekanbaru |  | Monthly rainfall 2016-2020; Jul-Sep rainfall 1991-2020 with SOI and DMI | No | 1991 | 2020 | 1 month |  |  |  |
+| `Deshmukh_ED_Fig4.xlsx` |  | IP, DP |  | Soil N2O fluxes by month | No | 2019-06 | 2020-05 | ~monthly |  |  |  |
+| `Deshmukh_ED_Fig5.xlsx` |  | IP | 0.3952, 102.76455 | Daily PPFD, Tair, VPD, soil T | No | 2017-06-01 | 2020-05-31 | 1 d |  |  |  |
+| `Deshmukh_ED_Fig6.xlsx` |  | DP | 0.69949, 102.79331 | Daily PPFD, Tair, VPD, soil T | No | 2016-10-01 | 2020-09-30 | 1 d |  |  |  |
+
+### A8: Kampar Peninsula Acacia plantation / degraded / intact, Riau
+
+- **Folder:** `A8_Kampar_Deshmukh2023/`
+- **Status:** Downloaded
+- **Data source:** [Zenodo 7500659 (index link)](https://doi.org/10.5281/zenodo.7500659), [Zenodo 7728463 (cited in the paper)](https://doi.org/10.5281/zenodo.7728463); licence CC-BY-4.0
+- **Paper:** Deshmukh et al. 2023, Nature 616, [doi:10.1038/s41586-023-05860-9](https://doi.org/10.1038/s41586-023-05860-9). Access: Hybrid OA (CC-BY); also in PMC (PMC10132972).
+  - Data availability: "All data that support the findings of this study are archived on Zenodo at 10.5281/zenodo.7728463."
+- **How the paper used the data:** GWL loggers (Solinst Levelogger 3001, every 30 min, perforated PVC anchored in clay): 4 around the plantation tower, 1 at the degraded site, 6 at the intact site; annual means average 11, 4 and 15 locations. GWL is the main explanatory variable for CO2, CH4 and N2O across the three land covers, and the paper places its sites on literature GWL-flux relationships (Fig. 3, ED Fig. 3c). ED Fig. 2a shows daily intact-site GWL (mean of 3 piezometers spanning 12 km) against the 90-day mean of rainfall minus ET.
+- Two Zenodo versions are kept: data/ holds 7500659 (the index link), data/zenodo_7728463_v03/ the version the paper cites. The daily GWL series is identical in both; v03 expands the diel ET panels of ED Fig. 2.
+- Only the intact-site GWL is published as a daily series; plantation and degraded-site GWL appear only as annual means (ED Table 2 in the paper).
+- Fig. 1 file gives the Acacia tower at 0 30'57"N, 102 02'11"E, about 70 km west of the other towers although the paper describes one landscape; check against the paper's Fig. 1 before using it.
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `Deshmukh_ED_Fig. 2.xlsx` | Panel a (identical in zenodo_7728463_v03/) | Intact site (mean of 3 piezometers over 12 km) | 0.3952, 102.76455 | Daily GWL and 90-day (rain - ET) | Yes: m; negative = below peat surface | 2017-06-01 | 2022-05-30 | 1 d | 1825 | 0 % | -0.87 / -0.236 / 0.20 |
+| `Deshmukh_ED_Fig. 2.xlsx` | Panels b, c | Intact site |  | Diel ET in dry and wet season | No |  |  |  |  |  |  |
+| `Deshmukh_ED_Fig. 1.xlsx` |  | Acacia, degraded, intact |  | Daily cumulative net CO2 and CH4 with uncertainty | No | 2016-10-01 | 2022-05-31 | 1 d |  |  |  |
+| `Deshmukh_ED_Fig. 3.xlsx` |  | 3 sites + literature |  | Quarterly soil N2O; literature GWL vs N2O | Yes (literature site means) |  |  |  |  |  |  |
+| `Deshmukh_Fig. 1.xlsx` |  | Towers, subsidence poles, N2O points |  | Coordinates (DMS): intact 0.3952 N 102.7645 E; degraded 0.6995 N 102.7933 E; Acacia 0.5159 N 102.0364 E (see note) | No |  |  |  |  |  |  |
+| `Deshmukh_Fig. 2.xlsx` |  | 3 sites |  | GHG balance table | No |  |  |  |  |  |  |
+| `Deshmukh_Fig. 3.xlsx` |  | Literature sites |  | GWL vs net CO2 and CH4 from eddy-covariance studies | Yes (site means) |  |  |  |  |  |  |
+
+### A9: 8 BRGM automatic stations, Batanghari (Jambi) and Kubu Raya (West Kalimantan)
+
+- **Folder:** `A9_Jambi_KubuRaya_Taufik2022/`
+- **Status:** Downloaded
+- **Data source:** [Data in Brief attachment mmc1.xlsx (via Europe PMC PMC8847808)](https://doi.org/10.1016/j.dib.2022.107903); licence CC BY-NC-ND (Data in Brief article licence)
+- **Paper:** Taufik et al. 2022, Data in Brief 41:107903, [doi:10.1016/j.dib.2022.107903](https://doi.org/10.1016/j.dib.2022.107903). Access: Gold OA; ScienceDirect blocks scripts, full text read via Europe PMC.
+  - Data availability: "Data available within the article and within Supplementary files"
+- **Paper:** Taufik et al. 2022, Agricultural and Forest Meteorology 312:108738 (research article using the data), [doi:10.1016/j.agrformet.2021.108738](https://doi.org/10.1016/j.agrformet.2021.108738). Access: Closed.
+  - Data availability: Not read (closed access).
+- **How the paper used the data:** Groundwater table was measured in a slotted 2-inch PVC well at each station, logged every 10 min, averaged to daily values in R, and recalibrated against manual readings every 3 months. In Taufik et al. 2022 (AFM) the daily GWT feeds a 'water table factor' in an improved drought-fire risk model; the water-retention curves ('wrc' sheet) give how much the water table re-wets the surface peat.
+- 'BRG' stations belong to the peat restoration agency BRG/BRGM, i.e. they are SiPALAGA stations (B1).
+- Coordinates are published only for BRG6 and BRG18; the others appear only on the map in Fig. 1.
+- % missing = share of days without data between each station's first and last record.
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `mmc1.xlsx` | sheet gwt | BRG3, Batanghari |  | Daily groundwater table (m) | Yes: m; negative = below peat surface | 2018-04-08 | 2019-08-27 | 1 d | 507 | 0 % | -1.68 / -0.948 / -0.488 |
+| `mmc1.xlsx` | sheet gwt | BRG4, Batanghari |  | Daily groundwater table (m) | Yes: m; negative = below peat surface | 2018-04-08 | 2018-12-28 | 1 d | 265 | 0 % | -0.959 / -0.66 / -0.301 |
+| `mmc1.xlsx` | sheet gwt | BRG5, Batanghari |  | Daily groundwater table (m) | Yes: m; negative = below peat surface | 2018-04-11 | 2019-12-31 | 1 d | 544 | 13.7 % | -1.325 / -0.495 / 0.015 |
+| `mmc1.xlsx` | sheet gwt | BRG6, Batanghari | -1.44281, 103.9693 | Daily groundwater table (m) | Yes: m; negative = below peat surface | 2018-04-11 | 2019-10-07 | 1 d | 545 | 0 % | -1.514 / -0.544 / 0.17 |
+| `mmc1.xlsx` | sheet gwt | BRG17, Kubu Raya |  | Daily groundwater table (m) | Yes: m; negative = below peat surface | 2018-04-12 | 2019-06-20 | 1 d | 435 | 5.6 % | -0.794 / -0.418 / -0.245 |
+| `mmc1.xlsx` | sheet gwt | BRG18, Kubu Raya | -0.27979, 109.51923 | Daily groundwater table (m) | Yes: m; negative = below peat surface | 2018-04-12 | 2018-12-31 | 1 d | 264 | 0 % | -0.85 / -0.375 / 0.046 |
+| `mmc1.xlsx` | sheet gwt | BRG19, Kubu Raya |  | Daily groundwater table (m) | Yes: m; negative = below peat surface | 2018-04-12 | 2019-11-14 | 1 d | 535 | 14.9 % | -1.54 / -1.123 / -0.732 |
+| `mmc1.xlsx` | sheet gwt | BRG20, Kubu Raya |  | Daily groundwater table (m) | Yes: m; negative = below peat surface | 2018-04-13 | 2019-12-31 | 1 d | 440 | 29.9 % | -1.32 / -0.698 / -0.379 |
+| `mmc1.xlsx` | sheet wrc | BRG6, BRG18 |  | Modelled water-retention curves (van Genuchten), top- and sub-soil | No |  |  |  |  |  |  |
+
+### A11: 48 smallholder plots (SUSTAINPEAT), Selangor and West/Central Kalimantan
+
+- **Folder:** `A11_SUSTAINPEAT_JovaniSancho2023/`
+- **Status:** Downloaded
+- **Data source:** [Nottingham repository doi:10.17639/nott.7296](https://doi.org/10.17639/nott.7296); licence CC-BY-4.0
+- **Paper:** Jovani-Sancho et al. 2023, Global Change Biology 29, [doi:10.1111/gcb.16747](https://doi.org/10.1111/gcb.16747). Access: Hybrid OA (CC-BY); accepted version on NERC NORA.
+  - Data availability: "The data that support the findings of this study are openly available in the Nottingham Research Data Management Repository at https://doi.org/10.17639/nott.7296."
+- **How the paper used the data:** WTD was read manually in a perforated PVC dipwell (2 m long, 1.5 m in the peat) next to each plot at every monthly gas-sampling visit. It was a fixed effect in mixed models of CH4 and N2O, and was used to fit an exponential CH4-WTD model (net CH4 emission starts around WTD -25 to -30 cm) and sigmoidal/linear N2O-WTD models; Fig. 2 shows seasonal WTD by land use.
+- Plot coordinates are not published (only region names and a map); regions: NS = North Selangor, SS = South Selangor, WK = West Kalimantan, CK = Central Kalimantan.
+- Two sampling methods are mixed in the file: 'vial' (static chambers, GC) and 'LGR' (dynamic chamber, Los Gatos).
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `CH4_and_N2O_emissions_SUSTAINPEAT_data_paper.xlsx` | sheet data (codes in sheet metadata) | 4 regions x forest / oil palm / tree crop / cropland x 3 subsites |  | CH4, N2O (ug m-2 h-1), air T, soil T10, WTD, total dissolved N | Yes: cm; negative = below peat surface | 2018-03-21 | 2019-04-01 | Monthly visits (20-32 dates per region) | 1303 of 1336 rows | 2.5 % | -136 / -37.5 / 16.1 cm |
+
+### A12: Sebungan / Sabaju oil-palm flux towers, Sarawak
+
+- **Folder:** `A12_Sebungan_McCalmont2021/`
+- **Status:** Embargoed / on request
+- **Data source:** [Exeter dataset doi:10.24378/exe.3143 (files embargoed)](https://doi.org/10.24378/exe.3143); licence All rights reserved (Exeter record)
+- **Paper:** McCalmont et al. 2021, Global Change Biology 27, [doi:10.1111/gcb.15544](https://doi.org/10.1111/gcb.15544). Access: Hybrid OA (CC-BY); PDF fetched from figshare 29777714.
+  - Data availability: "The data that support the findings of this study are available from the corresponding author upon reasonable request."
+- **How the paper used the data:** Two eddy-covariance towers: OPnew (converted from logged forest in 2016) and OPmature. WTD was measured with a submersible pressure transducer (Omega PX709GW) in a 0.05 m porous pipe to 2.5 m depth. Night-time NEE (taken as Reco) was related to WTD in 0.01 m bins using measured (not gap-filled) data; mean WTD was 0.54 m (OPnew) and 0.26 m (OPmature), which the authors use to argue their mature-plantation emissions are conservative.
+- The Exeter record (52.6 MB) is embargoed: 'permission from a third-party is required before access can be granted'.
+- Periods: OPnew Sep 2016 - Jan 2020; OPmature May 2017 - Jan 2020 (Apr-Aug 2019 excluded after a sensor fault).
+- Coordinates: OPnew (Sabaju) 3 09.615'N 113 25.163'E = 3.1603, 113.4194; OPmature (Sebungan) 3 09.965'N 113 21.198'E = 3.1661, 113.3533. The index coordinate is OPmature.
+
+### A13-14: CIFOR Central Kalimantan: primary forest vs oil palm
+
+- **Folder:** `A13-14_CIFOR_CentralKalimantan_Swails2019/`
+- **Status:** Public, but server unreachable from the cloud
+- **Data source:** [CIFOR Dataverse doi:10.17528/CIFOR/DATA.00061](https://doi.org/10.17528/CIFOR/DATA.00061); licence CIFOR Dataverse (terms not readable from the cloud)
+- **Paper:** Hergoualc'h et al. 2017, Biogeochemistry 135:203-220 (the paper DATA.00061 belongs to), [doi:10.1007/s10533-017-0363-4](https://doi.org/10.1007/s10533-017-0363-4). Access: Hybrid OA (CC-BY); Springer blocks scripts, open in a browser.
+  - Data availability: Not read (Springer bot check). The CIFOR record is titled 'Replication Data for: ... Biogeochemistry 135(3): 203-220'.
+- **Paper:** Swails et al. 2019, Biogeochemistry 142 (the paper named in the index), [doi:10.1007/s10533-018-0519-x](https://doi.org/10.1007/s10533-018-0519-x). Access: Closed.
+  - Data availability: Not read (closed access).
+- **How the paper used the data:** Hergoualc'h 2017: total and heterotrophic soil respiration over 13 months in trenched vs control plots in a primary peat swamp forest and two oil palm plantations (planted 2007 and 2012). Swails 2019 (same group, closed) relates soil respiration to climatic drivers in the same kind of forest vs oil palm comparison. The CIFOR record contains three databases: DBCollar (monthly and/or daily data per respiration collar), DBSoilMoisture, DBLitterfall; whether DBCollar includes WTD could not be checked.
+- data.cifor.org dropped every TLS connection from the cloud, so nothing was downloaded. Run `python3 download_data.py A13` on your computer; it resolves the files through the Dataverse API.
+- The index links DATA.00061 to Swails 2019, but the record belongs to Hergoualc'h et al. 2017.
+- Other CIFOR records from this group (not in the index): DATA.00201, 00290, 00291, 00330, 00331.
+
+### B1: SiPALAGA water-level network (BRGM), Indonesia
+
+- **Folder:** `B1_SiPALAGA_BRGM/`
+- **Status:** No public data
+- **Data source:** [SiPALAGA portal](https://sipalaga.brgm.go.id); licence Portal / request
+- **Paper:** Mleczko et al. 2025, Remote Sensing of Environment (use case), [doi:10.1016/j.rse.2025.115009](https://doi.org/10.1016/j.rse.2025.115009). Access: Hybrid OA (CC-BY); ScienceDirect blocks scripts.
+  - Data availability: Not read (ScienceDirect blocked).
+- **How the paper used the data:** Mleczko et al. compare Sentinel-1 SBAS InSAR ground displacement with GWL and peat-surface elevation from local monitoring networks in Central Kalimantan (2017-2022) and show the InSAR results depend on the hydrological state (from the abstract).
+- sipalaga.brgm.go.id returned HTTP 403 from its own server to the cloud request; try it from your browser.
+- A9 is a published subset: 8 BRG stations with daily data for 2018-2019.
+
+### B2: SiMATAG-0.4m compliance points (KLHK), Indonesia
+
+- **Folder:** `B2_SiMATAG_KLHK/`
+- **Status:** No public data
+- **Data source:** [KLHK press release](https://ppid.menlhk.go.id/berita/siaran-pers/4915/menteri-lhk-luncurkan-simatag-04m-untuk-monitoring-keberhasilan-pemulihan-gambut); licence Not public
+- **How the paper used the data:** Government compliance monitoring system; no research paper or public data.
+
+### C1: South Sumatra rewetting trial (257 dams)
+
+- **Folder:** `C1_SouthSumatra_Hooijer2024/`
+- **Status:** Embargoed / on request
+- **Data source:** [Paper](https://doi.org/10.1038/s41598-024-60462-3)
+- **Paper:** Hooijer et al. 2024, Scientific Reports 14:10721, [doi:10.1038/s41598-024-60462-3](https://doi.org/10.1038/s41598-024-60462-3). Access: Gold OA (CC-BY); also PMC11087581.
+  - Data availability: "The datasets analyzed during the study are available from the corresponding author on reasonable request."
+- **How the paper used the data:** Monthly groundwater table depth and subsidence in PVC dipwells anchored in the mineral subsoil along a 4.2 km transect from the main road canal into forest (from Jan 2016; 20 dipwells after quality screening; short gaps filled from neighbours or by interpolation), grouped into six 700 m zones. Used to show the water-table gradient after canal blocking and its link to subsidence and forest regrowth; LiDAR canal water depth on four dates extends this spatially.
+- Supplementary Table 2 (in the SI PDF, not committed) gives per-dipwell mean GWD and subsidence, not time series.
+- This site is one of the four calibration records of D1.
+
+### C3: Pulau Padang land-use units, Riau
+
+- **Folder:** `C3_PulauPadang_Ismail2021/`
+- **Status:** No public data
+- **Data source:** [Paper](https://doi.org/10.2166/nh.2021.062)
+- **Paper:** Ismail et al. 2021, Hydrology Research 52(6):1372, [doi:10.2166/nh.2021.062](https://doi.org/10.2166/nh.2021.062). Access: Gold OA (CC BY-NC-ND); IWA blocks scripts, open in a browser.
+  - Data availability: Not read (IWA blocked automated access).
+- **How the paper used the data:** Water table and precipitation monitored at several stations on Padang Island; analyses WTD recession rates near plantation drainage (up to 3.5 cm/day, WTD to -1.8 m) versus village farm drains, and specific yield by depth (from the abstract).
+
+### C5: Muara Siran undrained peatland, East Kalimantan
+
+- **Folder:** `C5_EastKalimantan_Asyhari2024/`
+- **Status:** Downloaded (part of the data)
+- **Data source:** [Zenodo 10427000](https://doi.org/10.5281/zenodo.10427000); licence CC-BY-4.0
+- **Paper:** Asyhari et al. 2024, Scientific Reports 14, [doi:10.1038/s41598-024-62233-6](https://doi.org/10.1038/s41598-024-62233-6). Access: Gold OA (CC-BY); also PMC11106321.
+  - Data availability: "All data that support the findings of this study are archived on 10.5281/zenodo.10427000."
+- **How the paper used the data:** CO2 and CH4 chamber fluxes (10 chambers per site, about 3 visits a month) with water level read manually at each chamber at the same time; an hourly Keller DCX-22 logger at each plot centre and a river logger (Siran River) track continuous water levels (Fig. 2). Water level is used to explain flux seasonality, e.g. CH4 rising as water fell from >1 m above the surface (Dec 2022) to near the surface (Jan 2023).
+- The index rated C5 as 'figures only'; the paper's Data availability points to this Zenodo record.
+- The hourly logger series of Fig. 2 are not in the archive.
+- Site codes in the file are PPSF and DPSF; the paper text uses PPSF and SPSF.
+- Sign: positive WaterDepth_cm = water above the peat surface (inferred from the flooding >1 m described in the paper).
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `GHG_Flux_Data.xlsx` | sheet All Data | PPSF (10 chambers) |  | WaterDepth_cm, CO2 and CH4 flux (Mg CO2(e) ha-1 yr-1) | Yes: cm; + = above surface (inferred) | 2022-10-27 | 2023-09-23 | ~3 visits/month (36 dates) | 360 | 0 % | -26 / 19.0 / 56 cm |
+| `GHG_Flux_Data.xlsx` | sheet All Data | DPSF (10 chambers) |  | as above | Yes: as above | 2022-10-27 | 2023-09-23 | ~3 visits/month (36 dates) | 360 | 0 % | -6 / 37.3 / 153 cm |
+
+### C6: Sarawak forest-to-oil-palm conversion flux tower
+
+- **Folder:** `C6_Sarawak_Kiew2025/`
+- **Status:** Embargoed / on request
+- **Data source:** [Paper](https://doi.org/10.1016/j.agrformet.2025.110956)
+- **Paper:** Kiew et al. 2025, Agricultural and Forest Meteorology 378:110956, [doi:10.1016/j.agrformet.2025.110956](https://doi.org/10.1016/j.agrformet.2025.110956). Access: Accepted manuscript on DSpace (Univ. of Tartu, CC-BY).
+  - Data availability: "The data utilized in this study are owned by the State Government of Sarawak. Access to these data is restricted and requires official approval from the government."
+- **How the paper used the data:** Half-hourly GWL at the tower (2011-2019), partly gap-filled with a neural network using GWL from a forest about 10 km away. Night-time NEE correlated negatively with GWL before conversion, with air temperature and VPD during conversion, and GWL again became the strongest control after conversion; Table 3 gives annual GWL.
+- Monthly GWL ranged from -139.2 to +4.6 cm; mean -19.2, -102.1 and -105.3 cm before, during and after conversion.
+
+### C7: Maludam National Park, 4 forest-type plots, Sarawak
+
+- **Folder:** `C7_Sarawak_Aeries2023/`
+- **Status:** No public data
+- **Data source:** [Paper](https://doi.org/10.58915/aset.v2i2.331)
+- **Paper:** Aeries et al. 2023, Advanced and Sustainable Technologies 2(2), [doi:10.58915/aset.v2i2.331](https://doi.org/10.58915/aset.v2i2.331). Access: Diamond OA (CC BY-NC-SA).
+  - Data availability: No data availability statement in the paper.
+- **How the paper used the data:** Two piezometers per plot with HOBO U20 water-level loggers (plus one barometric logger) logging every 30 min from 2011 to 2015; monthly means are used for seasonal patterns, WT-precipitation regressions and Mann-Kendall trends.
+- Plots: MA 1.43095 N 111.13113 E (mixed peat swamp); MB 1.45348 N 111.14924 E (Alan batu); MC 1.46330 N 111.15796 E (Alan bunga); MD 1.48162 N 111.17366 E (padang Alan). Same national park as the MY-MLM tower (A6).
+
+### C8-9: North Selangor peat swamp forest, Malaysia
+
+- **Folder:** `C8-9_NorthSelangor_LoParish2022_Ledger2023/`
+- **Status:** Downloaded (part of the data)
+- **Data source:** [Ledger 2023 supplementary DataSheet1/2](https://doi.org/10.3389/fenvs.2023.1182100); licence CC-BY (Frontiers supplementary material)
+- **Paper:** Lo & Parish 2022, Archives of Agriculture Research and Technology 3, [doi:10.54026/aart/1029](https://doi.org/10.54026/aart/1029). Access: Gold OA, but the publisher's TLS certificate has expired; open in a browser at your own risk.
+  - Data availability: Not read (publisher certificate expired).
+- **Paper:** Ledger et al. 2023, Frontiers in Environmental Science 11:1182100, [doi:10.3389/fenvs.2023.1182100](https://doi.org/10.3389/fenvs.2023.1182100). Access: Gold OA (CC-BY).
+  - Data availability: "The original contributions presented in the study are included in the article/Supplementary Material, further inquiries can be directed to the corresponding author."
+- **How the paper used the data:** Lo & Parish 2022: monthly groundwater table on transects Dec 2013 - Dec 2016 in logged-over forest, degraded open land and smallholder oil palm, and the effect of drains (from the abstract). Ledger 2023: peat surface oscillation at 14 sites (288 subsidence poles, 3 time-lapse cameras); water table from piezometers read manually with the poles and logged automatically at two camera sites; used to show that oscillation magnitude depends on peat condition and water-table range.
+- The index rated C8-9 as 'figures only'; Ledger 2023's supplement contains the raw water-table data.
+- Lo & Parish 2022 data (2013-2016) remain unavailable.
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `Ledger2023_DataSheet1.XLSX` | sheet Jul18Jan20_m_tidy | 13 of 14 sites (F2-F8, B5, B12, B13, OP14-OP18; F3 has none) | see DataSheet2,  | Manual water table (m) read with the subsidence poles | Yes: m; negative = below peat surface | 2018-08-15 | 2020-02-06 | 5 occasions | 52 |  | -1.14 / -0.389 / 0.208 |
+| `Ledger2023_DataSheet1.XLSX` | sheet Automated_datasets | Site 6, degraded forest (camera + logger) | 3.43868, 101.27982 | Adjusted water table level (cm, m) and camera peat-surface elevation | Yes: cm; negative = below peat surface | 2019-04-20 | 2020-01-20 | 1 d (12:00 reading) | 276 |  | -117.0 / -28.6 / 32.3 cm |
+| `Ledger2023_DataSheet1.XLSX` | sheet Automated_datasets | Site 13, fire-affected scrubland (camera + logger) | 3.46602, 101.43712 | Water table relative to peat surface (cm, m) and camera peat-surface elevation | Yes: as above | 2019-04-11 | 2020-01-20 | 1 d (12:00 reading) | 285 |  | -17.2 / 7.6 / 24.6 cm |
+| `Ledger2023_DataSheet1.XLSX` | other sheets | 14 sites |  | Subsidence poles, surface oscillation, bulk density, Rock-Eval | No | 2018-08 | 2020-02 | monthly/irregular |  |  |  |
+| `Ledger2023_DataSheet2.XLSX` | Supplementary tables 3-4 | 14 sites | 3.44-3.70, 101.07-101.44 | Site coordinates (X = lon, Y = lat), land cover, peat depth and properties | No |  |  |  |  |  |  |
+
+### C10-11: Time-lapse camera WTD, Central Kalimantan
+
+- **Folder:** `C10-11_TimelapseCamera_Evans2021/`
+- **Status:** Embargoed / on request
+- **Data source:** [Paper](https://doi.org/10.3389/fenvs.2021.630752)
+- **Paper:** Evans et al. 2021, Frontiers in Environmental Science 9:630752, [doi:10.3389/fenvs.2021.630752](https://doi.org/10.3389/fenvs.2021.630752). Access: Gold OA (CC-BY).
+  - Data availability: "The raw data supporting the conclusions of this article will be made available by the authors, without undue reservation."
+- **How the paper used the data:** Eight time-lapse 'peat cameras' in forest, burned, agricultural and oil-palm sites between Palangka Raya and the Sebangau/Kahayan rivers (1.88-2.35 S, 113.47-114.10 E) recorded peat surface motion and WTD, 3-hourly and hourly from late Feb 2020; camera WTD was checked against pressure transducers (Feb-Jun 2020) and manual subsidence poles; annual subsidence was taken between Jan 2019 and Jan 2020.
+- The index says 'Central Kalimantan, South Sumatra'; the paper covers Central Kalimantan only.
+
+### C12: Badas burnt vs intact peat swamp forest, Brunei
+
+- **Folder:** `C12_Badas_Lupascu2020/`
+- **Status:** No public data
+- **Data source:** [Paper](https://doi.org/10.1111/gcb.15195)
+- **Paper:** Lupascu et al. 2020, Global Change Biology 26, [doi:10.1111/gcb.15195](https://doi.org/10.1111/gcb.15195). Access: Closed.
+  - Data availability: Not read (closed access).
+- **How the paper used the data:** Water table and soil temperature monitored continuously from June 2017 to January 2019 in an intact and a repeatedly burnt forest; higher, longer-lasting water tables in the burnt area explain its higher CH4 efflux (from the abstract).
+
+### D1: SE Asia forested-peatland WTD model maps
+
+- **Folder:** `D1_SEA_WTD_model_Hooijer2026/`
+- **Status:** Downloaded
+- **Data source:** [Mendeley Data 69mbg22fxf](https://doi.org/10.17632/69mbg22fxf); licence CC BY 4.0
+- **Paper:** Hooijer & Vernimmen 2026, Scientific Reports, [doi:10.1038/s41598-026-64641-2](https://doi.org/10.1038/s41598-026-64641-2). Access: Gold OA (CC-BY); also PMC13503653.
+  - Data availability: "The rainfall and WTD maps presented in this paper are available online in GIS format (https://doi.org/10.17632/69mbg22fxf). ... updated maps can be shared by the authors upon reasonable request."
+- **How the paper used the data:** A simple water-balance model driven by GPM IMERG satellite rainfall produces 25 years of indicative daily WTD for forested peat, calibrated on four long-term records: Sarawak (Busman et al. 2023, 8 y), Riau (A8, 6 y), Central Kalimantan (A3, 16 y) and South Sumatra (C1, 5 y). Daily results are summarised into maps of hydrological regime (annual mean and minimum WTD, days below -0.5 m) to discuss variable WTD targets for restoration.
+- The published files are 10 summary GeoTIFFs, not daily grids; the index's 'daily, ~25 y' describes the model, not the download.
+
+| File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `Fig4a_WTD_annual_mean.tif` |  | SE Asia forested peat | -6.1 to 7.4, 95.0 to 119.3 | Annual mean WTD (m); EPSG:4326, 243 x 135 cells, 2797 peat cells | Yes: m; negative = below peat surface | 2000 | 2024 | 0.1 deg grid | 2797 |  | -5.63 / -0.15 / -0.04 |
+| `Fig4b_WTD_min_overall_2000_2024.tif` |  | as above |  | Minimum WTD over 2000-2024 (m) | Yes: m; negative = below peat surface | 2000 | 2024 | 0.1 deg grid | 2797 |  | -10.42 / -0.90 / -0.27 |
+| `Fig4c_WTD_annual_mean_min.tif` |  | as above |  | Mean annual minimum WTD (m) | Yes: m; negative = below peat surface | 2000 | 2024 | 0.1 deg grid | 2797 |  | -6.10 / -0.44 / -0.16 |
+| `Fig4d_WTD_annual_mean_days_below_min0p5m.tif` |  | as above |  | Mean days per year with WTD below -0.5 m | Derived | 2000 | 2024 | 0.1 deg grid | 2797 |  | 0 / 23.6 / 341 days |
+| `Fig4e_WTD_longest_period_overall_wtd_below_0p5m_2000_2024.tif` |  | as above |  | Longest period with WTD below -0.5 m (days) | Derived | 2000 | 2024 | 0.1 deg grid | 2797 |  | 0 / 103 / 366 days |
+| `Fig2a-e_GPM_*.tif (5 files)` |  | as above |  | GPM IMERG rainfall statistics (annual mean/min, 91-day minimum, dry-period length) | No | 2000 | 2024 | 0.1 deg grid |  |  |  |
+
+## Folder layout
+
+```
+literature/
+  INDEX.md             original search table
+  DATA_SUMMARY.md/.xlsx  this summary
+  download_data.py     re-downloads all public data (stdlib only)
+  download_papers.py   downloads the open-access papers and supplements
+  build_summary.py     regenerates this summary and the folder READMEs
+  <ID>_<site>_<paper>/
+    README.md  data/  paper/ (git-ignored)
+```
+
+Git-ignored (kept only where they were downloaded): `*.pdf`, `*/paper/`, `*/data/_large/` (files over 100 MB; none so far), `*/data/_unzipped/`.

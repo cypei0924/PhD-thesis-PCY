@@ -1,0 +1,20 @@
+/* DATA DESCRIPTION:
+Citation:	Cobb, Alexander R; Harvey, Charles Franklin (2019): Specific yield from the Mendaram peat swamp in Brunei Darussalam [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.908210, 
+	In supplement to: Cobb, AR; Harvey, CF (2019): Scalar Simulation and Parameterization of Water Table Dynamics in Tropical Peatlands. Water Resources Research, 55(11), 9351-9377, https://doi.org/10.1029/2019WR025411
+Abstract:	The specific yield knots are recorded along with their 95% confidence intervals. Details on how they were computed from the peat surface Laplacian and throughfall and water table time series are provided inCobb and Harvey (2019).
+Keyword(s):	hydraulic conductivity; specific yield; throughfall; tropical peat swamp; water table
+Further details:	README for Brunei peat swamp data (URI: https://store.pangaea.de/Publications/Cobb-Harvey_2019/README.pdf)
+Parameter(s):	Water level [m] (WL) * PI: Cobb, Alexander R (https://orcid.org/0000-0002-3128-3002, alex.cobb@smart.mit.edu) * METHOD/DEVICE: Solinst Levelogger (URI: http://www.solinst.com/Prod/3001/3001.html)
+	Specific yield function [m/s] (Spec yield func) * PI: Cobb, Alexander R (https://orcid.org/0000-0002-3128-3002, alex.cobb@smart.mit.edu)
+	Specific yield function [m/s] (Spec yield func) * PI: Cobb, Alexander R (https://orcid.org/0000-0002-3128-3002, alex.cobb@smart.mit.edu) * COMMENT: Lower bound
+	Specific yield function [m/s] (Spec yield func) * PI: Cobb, Alexander R (https://orcid.org/0000-0002-3128-3002, alex.cobb@smart.mit.edu) * COMMENT: Upper bound
+License:	Creative Commons Attribution 4.0 International (CC-BY-4.0) (URI: https://creativecommons.org/licenses/by/4.0/)
+Size:	24 data points
+*/
+WL [m]	Spec yield func [m/s]	Spec yield func [m/s] (Lower bound)	Spec yield func [m/s] (Upper bound)
+-0.291661823	0.136	0.130	0.141
+-0.183116244	0.167	0.166	0.169
+-0.015736269	0.254	0.252	0.256
+0.010647148	0.291	0.288	0.294
+0.038784892	0.289	0.287	0.291
+0.168338177	0.686	0.671	0.700

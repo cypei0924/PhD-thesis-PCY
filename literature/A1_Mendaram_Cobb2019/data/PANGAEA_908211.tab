@@ -1,0 +1,110 @@
+/* DATA DESCRIPTION:
+Citation:	Cobb, Alexander R; Harvey, Charles Franklin (2019): Flowtube data from the Mendaram peat swamp in Brunei Darussalam [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.908211, 
+	In supplement to: Cobb, AR; Harvey, CF (2019): Scalar Simulation and Parameterization of Water Table Dynamics in Tropical Peatlands. Water Resources Research, 55(11), 9351-9377, https://doi.org/10.1029/2019WR025411
+Abstract:	The flowtube described in this flowtube geometry dataset encloses the piezometers and througfall gauges. The centroid of the throughfall gauges is taken as the location of the flowtube (in the location dataset). The areas and integrated gradients provided in the flowtube geometry dataset were used to calculate the two-dimensional Laplacian of the peat surface elevation, used in Cobb and Harvey (2019).
+Keyword(s):	hydraulic conductivity; specific yield; throughfall; tropical peat swamp; water table
+Further details:	README for Brunei peat swamp data (URI: https://store.pangaea.de/Publications/Cobb-Harvey_2019/README.pdf)
+Coverage:	LATITUDE: 4.369827 * LONGITUDE: 114.353973
+Event(s):	Brunei_Darussalam * LATITUDE: 4.369827 * LONGITUDE: 114.353973
+Parameter(s):	Area [km**2] (Area) * PI: Cobb, Alexander R (https://orcid.org/0000-0002-3128-3002, alex.cobb@smart.mit.edu) * COMMENT: enclosed
+	Integrated normal gradient [m] (ING) * PI: Cobb, Alexander R (https://orcid.org/0000-0002-3128-3002, alex.cobb@smart.mit.edu)
+License:	Creative Commons Attribution 4.0 International (CC-BY-4.0) (URI: https://creativecommons.org/licenses/by/4.0/)
+Size:	192 data points
+*/
+Area [km**2]	ING [m]
+0.000000	0.000000
+0.318238	0.362914
+0.347676	0.367799
+0.381521	0.426586
+0.450233	0.604050
+0.551259	0.509532
+0.704498	0.696118
+0.816868	0.865388
+0.951464	1.080246
+1.105757	1.111305
+1.260768	1.224841
+1.397322	1.385448
+1.570311	1.351748
+1.729521	1.414170
+1.879814	1.725013
+2.021246	1.559744
+2.162285	1.734840
+2.294831	1.759246
+2.408018	2.438761
+2.511067	2.397425
+2.621087	2.541145
+2.739037	2.446435
+2.862655	2.573242
+2.980221	2.429554
+3.100426	2.418761
+3.213731	2.735194
+3.324969	2.783905
+3.439992	3.018448
+3.547865	3.244249
+3.651331	3.423847
+3.753371	3.628121
+3.852063	3.845285
+3.950936	3.892333
+4.050193	3.805891
+4.149453	4.155861
+4.244394	4.503716
+4.332847	4.788089
+4.415456	5.319750
+4.492540	5.606198
+4.567892	5.738697
+4.642759	5.884822
+4.713076	6.373462
+4.781007	6.654915
+4.846996	6.753731
+4.913132	6.656158
+4.981326	6.591208
+5.051396	6.620801
+5.122773	6.747318
+5.195505	6.745345
+5.270471	6.600258
+5.346639	6.671261
+5.423211	6.885113
+5.498658	6.985785
+5.572414	7.353752
+5.643214	7.750718
+5.711559	8.169834
+5.776910	8.473421
+5.842963	8.499452
+5.908611	8.735524
+5.973096	8.855486
+6.036371	9.241632
+6.097102	9.586123
+6.156913	9.718761
+6.215542	9.968248
+6.272580	10.382123
+6.328457	10.777561
+6.382913	11.271780
+6.436229	11.740837
+6.488670	12.213179
+6.539946	12.854350
+6.590070	13.393991
+6.639106	13.951178
+6.687540	14.333046
+6.735219	14.735523
+6.782186	14.926558
+6.828996	15.214448
+6.874090	15.794325
+6.917499	16.376031
+6.959556	16.927865
+7.000214	17.581541
+7.039684	18.201151
+7.078011	18.685767
+7.115443	19.095414
+7.151854	19.816485
+7.187357	20.403296
+7.222482	20.848839
+7.257357	21.071848
+7.292114	21.116432
+7.327062	21.016013
+7.362567	20.916771
+7.398255	21.019774
+7.433949	21.301214
+7.469728	21.543159
+7.505960	21.391827
+7.544754	20.704993
+7.587547	19.091091
