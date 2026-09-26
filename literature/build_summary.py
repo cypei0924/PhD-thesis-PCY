@@ -195,7 +195,9 @@ DATASETS = [
         notes=["FLUXNET-CH4 covers only 2014-2015 for MY-MLM, not the 2011-2014 period of Tang 2020; the full record is "
                "held by the Sarawak Tropical Peat Research Institute.",
                "FLUXNET site metadata: 1.4536, 111.1495, AsiaFlux, EBF. C7 (Aeries 2023) has 2011-2015 water-table loggers in "
-               "the same national park."],
+               "the same national park.",
+               "Daily WT for this forest for 2011-2014 is public on figshare (doi:10.6084/m9.figshare.25299358) and half-hourly "
+               "WT for Nov-Dec 2013 on Zenodo (doi:10.5281/zenodo.1161966); see EXPANDED_2006-2026 rows A15-A16."],
         files=[]),
     dict(
         id="A7", folder="A7_Kampar_Deshmukh2021", name="Kampar Peninsula intact vs degraded peatland, Riau",
@@ -249,8 +251,8 @@ DATASETS = [
                "paper cites. The daily GWL series is identical in both; v03 expands the diel ET panels of ED Fig. 2.",
                "Only the intact-site GWL is published as a daily series; plantation and degraded-site GWL appear only as annual "
                "means (ED Table 2 in the paper).",
-               "Fig. 1 file gives the Acacia tower at 0 30'57\"N, 102 02'11\"E, about 70 km west of the other towers although "
-               "the paper describes one landscape; check against the paper's Fig. 1 before using it."],
+               "Fig. 1 file gives the Acacia tower at 0 30'57\"N, 102 02'11\"E, about 70 km west of the other towers; "
+               "Deshmukh et al. 2020 (GCB, doi:10.1111/gcb.15019) gives the same position, so the coordinate is correct."],
         files=[
             f("Deshmukh_ED_Fig. 2.xlsx", "Intact site (mean of 3 piezometers over 12 km)", 0.39520, 102.76455, "Intact PSF",
               "Daily GWL and 90-day (rain - ET)", "Yes: " + NEG, "2017-06-01", "2022-05-30", "1 d", 1825, "0 %",
@@ -553,6 +555,7 @@ CORRECTIONS = [
     ("A6", "Period in FLUXNET-CH4", "2011-2014", "FLUXNET-CH4 has 2014-2015 only; 2011-2014 is the paper's record"),
     ("A8", "Zenodo record", "7500659", "The paper cites 7728463 (v03); both downloaded, GWL identical"),
     ("A8", "WTD content", "Kampar GWL for 3 sites", "Only intact-site daily GWL is published; other sites only as annual means"),
+    ("A8", "Acacia tower coordinate", "(not given)", "0.5159 N, 102.0364 E; confirmed by Deshmukh et al. 2020"),
     ("A12", "Availability", "A/B", "Not downloadable: Exeter files embargoed, paper says 'on request'"),
     ("A13-14", "Paper behind the CIFOR DOI", "Swails 2019", "DATA.00061 is the replication data of Hergoualc'h et al. 2017"),
     ("C5", "Availability", "C (figures only)", "Zenodo 10427000 (CC-BY) has manual water depth per chamber visit; hourly logger data not archived"),

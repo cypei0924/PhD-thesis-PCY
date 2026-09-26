@@ -69,6 +69,7 @@ No public continuous WTD series was found for Thailand (Kuan Kreng), Vietnam (U 
 | A6 | Period in FLUXNET-CH4 | 2011-2014 | FLUXNET-CH4 has 2014-2015 only; 2011-2014 is the paper's record |
 | A8 | Zenodo record | 7500659 | The paper cites 7728463 (v03); both downloaded, GWL identical |
 | A8 | WTD content | Kampar GWL for 3 sites | Only intact-site daily GWL is published; other sites only as annual means |
+| A8 | Acacia tower coordinate | (not given) | 0.5159 N, 102.0364 E; confirmed by Deshmukh et al. 2020 |
 | A12 | Availability | A/B | Not downloadable: Exeter files embargoed, paper says 'on request' |
 | A13-14 | Paper behind the CIFOR DOI | Swails 2019 | DATA.00061 is the replication data of Hergoualc'h et al. 2017 |
 | C5 | Availability | C (figures only) | Zenodo 10427000 (CC-BY) has manual water depth per chamber visit; hourly logger data not archived |
@@ -183,6 +184,7 @@ No public continuous WTD series was found for Thailand (Kuan Kreng), Vietnam (U 
 - **How the paper used the data:** Eddy-covariance CO2 exchange over a peat swamp forest in 2011-2014: the forest was a net CO2 source every year (183-632 g C m-2 yr-1); path analysis identified vapour-pressure deficit, not water table, as the main driver of GPP and RE (from the abstract).
 - FLUXNET-CH4 covers only 2014-2015 for MY-MLM, not the 2011-2014 period of Tang 2020; the full record is held by the Sarawak Tropical Peat Research Institute.
 - FLUXNET site metadata: 1.4536, 111.1495, AsiaFlux, EBF. C7 (Aeries 2023) has 2011-2015 water-table loggers in the same national park.
+- Daily WT for this forest for 2011-2014 is public on figshare (doi:10.6084/m9.figshare.25299358) and half-hourly WT for Nov-Dec 2013 on Zenodo (doi:10.5281/zenodo.1161966); see EXPANDED_2006-2026 rows A15-A16.
 
 ### A7: Kampar Peninsula intact vs degraded peatland, Riau
 
@@ -218,7 +220,7 @@ No public continuous WTD series was found for Thailand (Kuan Kreng), Vietnam (U 
 - **How the paper used the data:** GWL loggers (Solinst Levelogger 3001, every 30 min, perforated PVC anchored in clay): 4 around the plantation tower, 1 at the degraded site, 6 at the intact site; annual means average 11, 4 and 15 locations. GWL is the main explanatory variable for CO2, CH4 and N2O across the three land covers, and the paper places its sites on literature GWL-flux relationships (Fig. 3, ED Fig. 3c). ED Fig. 2a shows daily intact-site GWL (mean of 3 piezometers spanning 12 km) against the 90-day mean of rainfall minus ET.
 - Two Zenodo versions are kept: data/ holds 7500659 (the index link), data/zenodo_7728463_v03/ the version the paper cites. The daily GWL series is identical in both; v03 expands the diel ET panels of ED Fig. 2.
 - Only the intact-site GWL is published as a daily series; plantation and degraded-site GWL appear only as annual means (ED Table 2 in the paper).
-- Fig. 1 file gives the Acacia tower at 0 30'57"N, 102 02'11"E, about 70 km west of the other towers although the paper describes one landscape; check against the paper's Fig. 1 before using it.
+- Fig. 1 file gives the Acacia tower at 0 30'57"N, 102 02'11"E, about 70 km west of the other towers; Deshmukh et al. 2020 (GCB, doi:10.1111/gcb.15019) gives the same position, so the coordinate is correct.
 
 | File | Part | Site / station | Lat, Lon | Content | WTD | Start | End | Step | N | Missing | Range |
 |---|---|---|---|---|---|---|---|---|---|---|---|

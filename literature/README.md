@@ -6,6 +6,9 @@ Public water-table-depth (WTD) data for Southeast Asian peatlands, downloaded fr
 - **`DATA_SUMMARY.md` / `DATA_SUMMARY.xlsx`**: what each file contains (site, coordinates, period, time step,
   WTD range and sign), how the original paper used the data, each paper's data-availability statement, and
   corrections to `INDEX.md`. Start here.
+- **`EXPANDED_2006-2026.md` / `.xlsx`**: sites and datasets found when the search was widened to 2006-2026 (not
+  downloaded), including sites from the last 10 years that `INDEX.md` missed and the 87 SE Asian water-level sites
+  compiled by Apers et al. 2022. Regenerate with `build_expanded.py`.
 - **`<ID>_<site>_<paper>/data/`**: the downloaded files, unchanged (zip archives are kept as zips).
 - **`<ID>_<site>_<paper>/README.md`**: the same information for that dataset.
 - **`<ID>_<site>_<paper>/paper/`**: papers and supplementary PDFs. Git-ignored, because the repository is public.

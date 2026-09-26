@@ -12,7 +12,7 @@
 
 - Two Zenodo versions are kept: data/ holds 7500659 (the index link), data/zenodo_7728463_v03/ the version the paper cites. The daily GWL series is identical in both; v03 expands the diel ET panels of ED Fig. 2.
 - Only the intact-site GWL is published as a daily series; plantation and degraded-site GWL appear only as annual means (ED Table 2 in the paper).
-- Fig. 1 file gives the Acacia tower at 0 30'57"N, 102 02'11"E, about 70 km west of the other towers although the paper describes one landscape; check against the paper's Fig. 1 before using it.
+- Fig. 1 file gives the Acacia tower at 0 30'57"N, 102 02'11"E, about 70 km west of the other towers; Deshmukh et al. 2020 (GCB, doi:10.1111/gcb.15019) gives the same position, so the coordinate is correct.
 
 ## Files in `data/`
 

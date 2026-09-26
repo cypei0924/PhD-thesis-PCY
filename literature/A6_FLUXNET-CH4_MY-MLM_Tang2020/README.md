@@ -12,6 +12,7 @@
 
 - FLUXNET-CH4 covers only 2014-2015 for MY-MLM, not the 2011-2014 period of Tang 2020; the full record is held by the Sarawak Tropical Peat Research Institute.
 - FLUXNET site metadata: 1.4536, 111.1495, AsiaFlux, EBF. C7 (Aeries 2023) has 2011-2015 water-table loggers in the same national park.
+- Daily WT for this forest for 2011-2014 is public on figshare (doi:10.6084/m9.figshare.25299358) and half-hourly WT for Nov-Dec 2013 on Zenodo (doi:10.5281/zenodo.1161966); see EXPANDED_2006-2026 rows A15-A16.
 
 ## Adding the FLUXNET-CH4 files
 

@@ -1,0 +1,426 @@
+#!/usr/bin/env python3
+"""Write EXPANDED_2006-2026.md and EXPANDED_2006-2026.xlsx: SE Asian peatland WTD sites and datasets found in the
+2006-2026 literature search that are NOT already in INDEX.md. Nothing is downloaded. Needs openpyxl.
+
+Row facts come from the papers (abstract or full text, as stated per row), repository metadata, or Table B1 of
+Apers et al. 2022 (listed separately in APERS_SITES). "≈" marks approximate coordinates.
+"""
+import os
+
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.utils import get_column_letter
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+SEARCHED = "2026-09-26"
+
+NEW10 = "2016-2026 (missed in first search)"
+OLD = "2006-2015 (new window)"
+
+
+def doi(d):
+    return "https://doi.org/" + d
+
+
+# (id, site/dataset, country-region, lat_lon, period, resolution/method, land use, avail, data link, paper links, window, verified via, notes)
+ROWS = [
+    # ---------------- A: public repositories ----------------
+    ("A15", "Maludam NP undrained forest (MY-MLM area) + converted oil palm: daily WT", "Malaysia, Sarawak",
+     "forest ≈1.45, 111.15 (MY-MLM); oil palm: see dataset", "forest 2011-01-01 to 2014-12-31; oil palm 2018-03-01 to 2019-05-31",
+     "Daily WT (cm), 1461 + 457 days", "Undrained PSF; oil palm", "A (CC-BY; authors ask to be co-authors)",
+     doi("10.6084/m9.figshare.25299358"), doi("10.1111/gcb.15332") + " ; " + doi("10.1016/j.scitotenv.2023.162062"),
+     NEW10, "data file header",
+     "Fills the WT gap of A6: same forest and the full 2011-2014 period of Tang 2020 (FLUXNET-CH4 has only 2014-2015)."),
+    ("A16", "Maludam MY-MLM tower: half-hourly CH4 flux with WT", "Malaysia, Sarawak", "1.4536, 111.1495",
+     "Nov-Dec 2013 (2928 half-hours)", "Half-hourly WT (cm) with CH4, NEE, met", "Undrained PSF", "A (CC-BY-4.0)",
+     doi("10.5281/zenodo.1161966"), doi("10.1029/2017gl076457"), NEW10, "data file header",
+     "Tang et al. 2018 GRL raw data; complements A6 and A15."),
+    ("A17", "41 oil-palm smallholdings + 21 protected-forest plots, Jambi", "Indonesia, Jambi", "see dataset (plot-level)",
+     "Aug 2018 - Aug 2019", "Logger WT per plot (Water_tables_loggers.csv, 10 MB); 12-month plot means -52 to -3 cm (farms), -3 to +15 cm (forest)",
+     "Smallholder oil palm; PSF", "A (CC0)", doi("10.5061/dryad.rr4xgxd9v"), doi("10.1111/1365-2664.14135"), NEW10,
+     "repository metadata + abstract", "Warren-Thomas et al. 2022; the logger file needs a Dryad download (API requires a token)."),
+    ("A18", "3 undrained PSF + 3 oil palm plantations, Central Kalimantan (CIFOR)", "Indonesia, Central Kalimantan", "see paper",
+     "~1.5 years (monthly)", "Monthly WT with CH4, N2O, soil respiration", "Undrained PSF; oil palm", "A (Frontiers supplement; CIFOR Dataverse)",
+     doi("10.3389/fenvs.2021.617828.s001") + " ; " + doi("10.17528/CIFOR/DATA.00201"), doi("10.3389/fenvs.2021.617828"), NEW10,
+     "abstract + repository metadata", "Swails et al. 2021; CIFOR record says 'environmental parameters' - WT column not opened."),
+    ("A19", "CIFOR Jambi forest-to-oil-palm transition + N-fertilisation plots", "Indonesia, Jambi", "see datasets",
+     "multi-year (monthly)", "Monthly soil respiration, litterfall and 'environmental variables' (WT expected, unverified)",
+     "PSF; oil palm", "A (CIFOR Dataverse; server unreachable from the cloud)",
+     doi("10.17528/CIFOR/DATA.00330") + " ; " + doi("10.17528/CIFOR/DATA.00331") + " ; " + doi("10.17528/CIFOR/DATA.00290") + " ; " + doi("10.17528/CIFOR/DATA.00316"),
+     doi("10.1016/j.geoderma.2016.01.016") + " (Comeau 2016, same group)", NEW10, "repository metadata",
+     "Run download_data.py-style Dataverse API calls locally to confirm a WT column."),
+    ("A20", "CIFOR SWAMP peatland GHG datasets: Katingan 2015, Tanjung Puting 2015", "Indonesia, Central Kalimantan", "see datasets",
+     "2015", "GHG fluxes with site variables (WT unverified)", "PSF", "A (CIFOR Dataverse)",
+     doi("10.17528/CIFOR/DATA.ZORCAF") + " ; " + doi("10.17528/CIFOR/DATA.F5DM1Y"), "-", NEW10, "repository metadata",
+     "Descriptions do not list variables; check for WT before relying on them."),
+    ("A21", "North Selangor PSF conversion chronosequence (forest, drained forest, young/mature oil palm)", "Malaysia, Selangor",
+     "see paper (NSPSF ≈3.4-3.7, 101.1-101.4)", "2 years monthly WT at 2 forest dipwells + WT at each GHG sampling",
+     "Dipwells, manual", "PSF; drained forest; oil palm", "A (partial: Source Data + Supplementary Data 1; rest on request)",
+     doi("10.1038/s41467-020-14298-w") + " (supplementary files)", doi("10.1038/s41467-020-14298-w"), NEW10, "full text (PMC)",
+     "Cooper et al. 2020 Nat Commun: 'All data are available on request... source data for Figs 1-3 provided'."),
+    ("A22", "Badas peat dome drainage canal: Levelogger records (canal level) + porewater chemistry", "Brunei", "4.5619, 114.3367",
+     "see dataset", "Canal water-level loggers (streamflow), not peat WTD", "Degraded peat dome", "A (HydroShare)",
+     doi("10.4211/hs.3953b24e0238467980a226c72cfc360e"), "manuscript (Somers et al.)", NEW10, "repository metadata",
+     "Useful as boundary condition for Badas (see C45)."),
+    # ---------------- B: networks / portals / on request ----------------
+    ("B3", "Long-term GWL at the Palangkaraya undrained forest (Takahashi / Japan-Indonesia)", "Indonesia, Central Kalimantan",
+     "-2.321002, 113.901161", "1993-09-01 to 2019-12-12", "Daily GWL, pressure sensor", "Undrained PSF (Sebangau)",
+     "B (paper: 'monthly GWL will be public via BRIN two years after the project ends')", "BRIN (future)",
+     doi("10.1038/s41598-023-27393-x"), NEW10, "full text (PMC)",
+     "Same location as A3 UF; extends it back to 1993 (27 years). Sulaiman et al. 2023 Sci Rep."),
+    ("B4", "SATREPS / Japan-Indonesia peat monitoring sites (11 sites, see sheet 'Apers2022_SEA_sites')", "Indonesia: C. Kalimantan, W. Kalimantan, Jambi, Riau",
+     "per site (e.g. Tumbang Nusa -2.3533, 114.0913; Taruna Jaya -2.3174, 114.0596; Pontianak oil palm 0.0052, 109.6971)",
+     "2012-2020 (site-specific)", "Continuous GWL loggers; published as graphs", "PSF, regenerating, oil palm, smallholder",
+     "B (graphs on kalimantan88.sakura.ne.jp; digitised by Apers 2022)", "http://kalimantan88.sakura.ne.jp/",
+     doi("10.1029/2021ms002784"), NEW10, "full text (PMC, Table B1)", "Hokkaido University-led network; ask the Japanese PIs for digital data."),
+    ("B5", "KFCP dipwell network, ex-Mega Rice Project Blocks A and E", "Indonesia, Central Kalimantan (Kapuas)",
+     "≈-2.3 to -2.7, 114.2-114.6 (Blocks A/E)", "Jan 2010 - Jan 2013", "300-460 dipwells + 15 staff gauges, monthly (blow-straw)",
+     "Degraded, drained peat; PSF remnants", "B (KFCP/BRG; request)", "KFCP technical paper (Ichsan, Vernimmen, Hooijer, Applegate 2013)",
+     doi("10.1088/1755-1315/149/1/012027") + " ; " + doi("10.1088/1755-1315/284/1/012021") + " ; " + doi("10.1016/j.scitotenv.2022.159701"),
+     OLD, "abstracts + web", "Used by Putra et al. 2018/2019 and for ML GWL maps (Hikouei et al. 2023, D6)."),
+    ("B6", "Borneo Nature Foundation Sebangau hydrology monitoring", "Indonesia, Central Kalimantan", "≈-2.3, 113.9-114.1 (Sabangau)",
+     "ongoing (multi-year)", "32 manual wells along a 14-km transect, monthly; dam monitoring", "PSF (NLPSF), dammed canals",
+     "B (NGO; request)", "https://borneonaturefoundation.org/conservation/hydrological-monitoring-for-protecting-peatlands/", "-",
+     NEW10, "web", ""),
+    ("B7", "APRIL subsidence/WT monitoring network, Kampar Peninsula and other concessions", "Indonesia, Riau", "≈0.3-1.0, 101.9-103.0",
+     "2007 - present", "WT in subsidence tubes, 2-weekly to 3-monthly (218 locations in Hooijer 2012; 312 sites in Evans 2019)",
+     "Acacia plantation; PSF", "B (company/IPEWG; request)", "-",
+     doi("10.5194/bg-9-1053-2012") + " ; " + doi("10.1016/j.geoderma.2018.12.028"), OLD + " / " + NEW10, "full text (BG) + abstract", ""),
+    ("B8", "SESAME automatic stations (GWL, soil moisture, rainfall)", "Indonesia: Riau (Dompas), South Sumatra (Saleh R. SR1/SR2, Lumpur R. LR1/LR2)",
+     "see papers", "≈2018 - 2021", "Automatic GWL sensors (sub-daily/daily)", "Degraded peat, restoration areas", "B (project; request)", "-",
+     doi("10.1088/1757-899x/796/1/012037") + " ; " + doi("10.1088/1742-6596/1568/1/012028") + " ; " + doi("10.26599/jgse.2023.9280008") + " ; " + doi("10.1063/5.0337576"),
+     NEW10, "abstracts", "Network operated with Midori Engineering Laboratory; used by Pratama 2020 and Irfan 2020-2026."),
+    ("B9", "Kuan Kreng peat swamp: daily water table (Pak Phanang Fire Control Station)", "Thailand, Nakhon Si Thammarat",
+     "≈8.0, 100.2", "multi-year (analysed 2010, 2012)", "Daily water table level", "Peat swamp forest (2/3 degraded)",
+     "B (station records; request)", "-", doi("10.48048/wjst.2018.2723"), NEW10, "abstract + web",
+     "First Thailand WT record found; fills the INDEX gap."),
+    ("B10", "U Minh Thuong National Park groundwater monitoring", "Vietnam, Kien Giang", "≈9.6, 105.1", "2002 - 2021",
+     "Groundwater level monitoring records (inherited by the park)", "Melaleuca forest on peat", "B (park records; request)", "-",
+     doi("10.3390/su16020620"), NEW10, "abstract + web", "Fills the INDEX gap for Vietnam."),
+    ("B11", "SE Pahang peat swamp forest / Pahang Peatland Restoration Project water levels", "Malaysia, Pahang", "≈3.2-3.4, 103.2-103.4",
+     "project period", "Water-level monitoring", "PSF, restoration", "B (project; request)", "https://pprp.my/", "-", NEW10, "web",
+     "Weak lead: no published series found."),
+    # ---------------- C: papers only (figures/tables) ----------------
+    ("C13", "Palangkaraya DB (burnt, dammed) and DF (drained forest) chamber sites", "Indonesia, Central Kalimantan",
+     "DB -2.3381, 114.0297; DF -2.3450, 114.0367", "2004-2007", "WT at chamber sites before/after dam building", "Burnt peat; drained PSF",
+     "C", "-", doi("10.1890/07-2038.1"), OLD, "abstract + Apers Table B1", "Jauhiainen et al. 2008 Ecology."),
+    ("C14", "Block C / Sebangau hydrology and canal-blocking studies (CKPP era)", "Indonesia, Central Kalimantan", "≈-2.3 to -2.5, 114.0-114.2",
+     "≈2004-2010", "Dipwell transects, manual", "Drained/burnt peat; PSF", "C",
+     "-", doi("10.1080/07900620500405973") + " ; " + doi("10.1016/j.catena.2007.07.010") + " ; " + doi("10.1007/s11027-010-9214-5") + " ; " + doi("10.1016/j.jenvman.2010.09.029") + " ; " + doi("10.1016/j.catena.2013.10.009"),
+     OLD, "abstracts", "Wösten 2006/2008, Jaenicke 2010/2011, Ritzema 2014."),
+    ("C15", "Sebangau logged forest (Könönen) and restored/dammed area (Lampela)", "Indonesia, Central Kalimantan",
+     "forest -2.3214, 113.8953; restored -2.3217, 114.0181", "2013; 2012-2013", "WT records at study plots", "Logged PSF; restored fernland",
+     "C", "-", doi("10.1007/s11273-016-9498-7") + " ; " + doi("10.1016/j.foreco.2016.12.004"), NEW10, "Apers Table B1 + references",
+     "Könönen et al. 2016 (Wetl. Ecol. Manag.); Lampela et al. 2017 (For. Ecol. Manag.)."),
+    ("C16", "Upper Sebangau PSF and Air Hitam (Jambi) GWL", "Indonesia, Central Kalimantan; Jambi",
+     "Upper Sebangau -2.42, 114.10; Air Hitam -1.497, 104.116", "2000-2008; 2003-2004", "GWL records", "PSF", "C",
+     "-", doi("10.1016/j.geoderma.2019.04.001"), NEW10, "Apers Table B1", "Taufik et al. 2019 Geoderma."),
+    ("C17", "Sebangau NP: forested vs dammed vs drained", "Indonesia, Central Kalimantan", "see papers", "Aug 2019 - Jan 2020",
+     "Automated + manual dipwells, hourly", "PSF; drained with/without ditch dams", "C", "-",
+     doi("10.1002/hyp.14174") + " ; " + doi("10.19189/map.2022.omb.sta.2407"), NEW10, "abstracts", "Putra et al. 2021; 2023 (storm responses)."),
+    ("C18", "Tumbang Nusa water-table fluctuation", "Indonesia, Central Kalimantan", "≈-2.35, 114.09", "see paper", "WT monitoring",
+     "PSF / degraded", "C", "-", doi("10.20886/glm.2020.1.1.27-40"), NEW10, "title only", "Same area as SATREPS IJ-1 (B4)."),
+    ("C19", "Jabiren ex-ICCTF plot: GWT transect and subsidence", "Indonesia, Central Kalimantan", "≈-2.55, 114.17", "7-10 months (see paper)",
+     "Periodic GWT along transect", "Degraded smallholder peat", "C", "-", doi("10.30595/agritech.v22i2.8000"), NEW10, "abstract", ""),
+    ("C20", "Time-lapse camera + WT at four sites (South Sumatra and Central Kalimantan)", "Indonesia", "see paper", "≈1 year",
+     "Camera-derived WT and peat motion", "Various", "C", "-", doi("10.1088/1755-1315/1025/1/012011"), NEW10, "abstract",
+     "Explains the 'South Sumatra' in INDEX row C10-11 (Sulaeman et al. 2022)."),
+    ("C21", "Forest and burnt area camera + water-level logger", "Indonesia, Central Kalimantan", "see paper", "Dec 2022 - Jun 2023",
+     "Water-level logger; camera every 2 h", "PSF; burnt", "C", "-", doi("10.1088/1755-1315/1421/1/012005"), NEW10, "abstract", ""),
+    ("C22", "Intact vs degraded peat soil hydrology (WTD, SWC, matric potential)", "Indonesia, Central Kalimantan", "see paper",
+     "Aug 2024 - Nov 2025", "Continuous WTD and soil sensors", "Intact PSF; drained/burnt", "C (new; check DA)", "-",
+     doi("10.1016/j.pedsph.2026.02.009") + " ; " + doi("10.2139/ssrn.7163970"), NEW10, "abstract", "Treby et al. 2026."),
+    ("C23", "Ex-MRP canal blocking (large/medium/small blocks) GWL", "Indonesia, Central Kalimantan", "see paper", "see paper",
+     "GWL wells", "Degraded PSF post-fire", "C", "-", doi("10.1088/1755-1315/1018/1/012027"), NEW10, "abstract", ""),
+    ("C24", "UF / DF / DB oxidative peat decomposition with GWL", "Indonesia, Central Kalimantan", "as A3", "Feb 2014 - Dec 2015",
+     "Chamber-time GWL", "Undrained, drained, burnt", "C", "-", doi("10.1016/j.scitotenv.2017.07.132"), NEW10, "abstract", "Same sites as A3 (Itoh et al. 2017)."),
+    ("C25", "Kampar: primary forest, ex-fire, mixed plantation GWL", "Indonesia, Riau", "see paper", "see paper", "Station GWL",
+     "PSF; burnt; plantation", "C", "-", doi("10.1088/1755-1315/361/1/012034"), NEW10, "abstract", "Suryatmojo et al. 2019."),
+    ("C26", "Siak: PSF, burnt peat, mixed plantation hydromet station", "Indonesia, Riau", "see paper", "Jul - Dec 2018",
+     "GWL sensor at hydromet station", "PSF; burnt; plantation", "C", "-", doi("10.1088/1755-1315/533/1/012012"), NEW10, "abstract", "Maryani et al. 2020."),
+    ("C27", "Dosan and Dayun villages (Siak): 31 sites, 124 shallow wells", "Indonesia, Riau", "≈0.64, 102.03 (Dayun)", "18 months",
+     "Shallow wells + subsidence poles", "Oil palm, Acacia regrowth, shrub", "C", "-", doi("10.1088/1755-1315/648/1/012029"), NEW10, "abstract",
+     "Mean GWT -55 cm (Dosan), -66 cm (Dayun)."),
+    ("C28", "Koto Village, Gasib (Siak) oil palm: subsidence and water level", "Indonesia, Riau", "see paper", "see paper", "GWL wells",
+     "Oil palm", "C", "-", doi("10.1088/1755-1315/756/1/012028"), NEW10, "abstract", ""),
+    ("C29", "Siak canal blocking: distance effect on GWL", "Indonesia, Riau", "see paper", "1 year", "Monitoring wells", "Various",
+     "C", "-", doi("10.1088/1755-1315/1315/1/012058"), NEW10, "abstract", "Mean GWL -26.7 cm near blocked canal."),
+    ("C30", "Sungai Tohor (Kep. Meranti) after BRG canal blocking", "Indonesia, Riau", "see papers", "1 year (daily logger)",
+     "Water-level logger in monitoring well", "Rewetted peat, sago/smallholder", "C", "-",
+     doi("10.1088/1757-899x/796/1/012041") + " ; " + doi("10.1088/1755-1315/1041/1/012047"), NEW10, "abstracts",
+     "Malik 2022 reports levels as elevations (8.78-9.72 m), not depths."),
+    ("C31", "Rewetted vs drained peat GHG, Riau", "Indonesia, Riau", "see paper", "see paper", "WT with GHG", "Rewetted/drained",
+     "C", "-", doi("10.3390/f13040505"), NEW10, "title/metadata", "Lestari et al. 2022 Forests."),
+    ("C32", "Kampar conservation forest N2O with WT", "Indonesia, Riau", "≈0.4, 102.8", "Jan - Dec 2020", "WT at sampling",
+     "Intact PSF", "C", "-", doi("10.29244/jpsl.11.3.442-452"), NEW10, "abstract", "Near A7/A8 intact site."),
+    ("C33", "Bengkalis Island: drained, undrained inland, undrained coastal", "Indonesia, Riau", "see paper", "Oct 2023 - Apr 2025",
+     "Daily in situ GWL", "Degraded/undrained peat", "C", "-", doi("10.15243/jdmlm.2026.131.9163"), NEW10, "abstract", "Sutikno et al. 2026."),
+    ("C34", "Acacia plantation CO2 transects (144 locations)", "Indonesia, Riau (Sumatra)", "see paper", "2 years",
+     "WT monthly or quarterly in PVC tubes", "Acacia plantation", "C", "-", doi("10.5194/bg-9-617-2012"), OLD, "full text (BG)", "Jauhiainen et al. 2012."),
+    ("C35", "Kampar natural forest and Acacia plantation CH4 towers", "Indonesia, Riau",
+     "forest 0°23'42.7\"N 102°45'52.4\"E; Acacia 0°30'57.2\"N 102°02'E", "see paper (≈2016-2018)",
+     "GWL every 30 min (Solinst), ~30 m from towers", "PSF; Acacia", "C (on request)", "-", doi("10.1111/gcb.15019"), NEW10, "full text (PMC)",
+     "Deshmukh et al. 2020; confirms A8's Acacia coordinate."),
+    ("C36", "Coconut plantation with 'Water Management Trinity'", "Indonesia, Riau (eastern Sumatra coast)", "see paper", "see paper",
+     "Manual WTD at each CO2 session (4-m perforated pipes)", "Coconut plantation", "C", "-", doi("10.1016/j.heliyon.2024.e26661"), NEW10,
+     "full text (PMC)", "Mean annual WTD -45 to -51 cm."),
+    ("C37", "Oil palm / Acacia / rubber CO2 studies with WT (IAARD group)", "Indonesia, Jambi, Riau, South Sumatra", "see papers",
+     "≈2010-2013", "WT at chamber sampling", "Oil palm; Acacia", "C", "-",
+     doi("10.1007/s11027-013-9515-6") + " ; " + doi("10.1007/s11027-014-9550-y") + " ; " + doi("10.1016/j.geoderma.2016.01.016"),
+     OLD, "titles/metadata", "Dariah 2013, Husnain 2014, Comeau 2016."),
+    ("C38", "Rubber plantation on peat: monthly GWL and subsidence", "Indonesia (see paper)", "see paper", "Dec 2014 - Dec 2015",
+     "Monthly GWL", "Rubber", "C", "-", doi("10.1016/j.scitotenv.2017.01.035"), NEW10, "abstract", "Wakhid et al. 2017."),
+    ("C39", "Smallholder mosaic, Tanjung Jabung Barat", "Indonesia, Jambi", "see paper", "Nov 2012 - May 2015",
+     "GWL with subsidence", "Rubber, coconut-coffee, oil palm, logged forest", "C", "-", doi("10.1007/s11027-018-9803-2"), NEW10,
+     "full text (PMC)", "Khasanah & van Noordwijk 2019."),
+    ("C40", "Saleh River / Lumpur River and Air Sugihan-Air Saleh PHU", "Indonesia, South Sumatra", "see papers", "2015-2021",
+     "SESAME GWL (see B8); Sentinel-1 soil-moisture model", "Degraded peat", "C", "-",
+     doi("10.24057/2071-9388-2021-137") + " ; " + doi("10.1088/1755-1315/810/1/012023"), NEW10, "abstracts", ""),
+    ("C41", "Kubu Raya / Mempawah: forested vs bare peat, canal blocks, oil palm, burnt peat", "Indonesia, West Kalimantan", "see papers",
+     "2016-2023 (study-specific)", "Piezometers/monitoring wells (e.g. twice daily Aug-Oct 2021; Sep-Dec 2023)", "PSF; bare; oil palm; burnt",
+     "C", "-", doi("10.13057/biodiv/d190221") + " ; " + doi("10.1051/matecconf/201819503016") + " ; " + doi("10.14710/jil.21.4.781-788") + " ; " + doi("10.1051/bioconf/202516703013"),
+     NEW10, "abstracts", "Astiani 2018, Herawati 2018, Nusantara 2023, Nahda 2025."),
+    ("C42", "Drained vs rewetted oil palm and secondary forest (Mempawah, Kubu Raya)", "Indonesia, West Kalimantan", "see paper", "see paper",
+     "WTL with CO2 and CH4", "Oil palm; secondary forest", "C (check DA)", "-", doi("10.1016/j.scitotenv.2024.175829"), NEW10, "abstract", "Novita et al. 2024."),
+    ("C43", "Young smallholder oil palm, South Kalimantan", "Indonesia, South Kalimantan", "see paper", "Sep 2018 - Mar 2020",
+     "Monthly (with soil CO2)", "Oil palm", "C", "-", doi("10.19189/map.2021.omb.sta.2159"), NEW10, "abstract", "Only South Kalimantan study found."),
+    ("C44", "West Aceh oil palm on peat: CO2 vs WT depth", "Indonesia, Aceh", "see paper", "see paper", "WT depths", "Oil palm", "C",
+     "-", doi("10.5400/jts.2010.15.3.255"), OLD, "title", ""),
+    ("C45", "Badas peat dome: groundwater monitoring along two transects", "Brunei", "≈4.56, 114.34", "see paper",
+     "Groundwater wells + rain gauge", "Degraded peat dome", "C", "-", doi("10.19189/map.2023.cm.sc.2332104"), NEW10, "abstract", ""),
+    ("C46", "Damit dome water table", "Brunei", "4.405, 114.363", "2012", "WT record", "Logged PSF", "C", "-",
+     doi("10.1111/gcb.14702"), NEW10, "Apers Table B1", "From Hoyt et al. 2019; not in A2's Zenodo files."),
+    ("C47", "Maludam NP three forest types: soil GHG and WT", "Malaysia, Sarawak", "see paper", "8 years",
+     "WT with monthly GHG", "Mixed PSF, Alan batu, Alan bunga", "C (Sarawak Govt data)", "-", doi("10.1016/j.scitotenv.2022.159973"), NEW10,
+     "abstract", "Busman et al. 2023; a D1 calibration record."),
+    ("C48", "Sarawak PSF: surface fluctuation and WT", "Malaysia, Sarawak", "see paper", "2011-2020 (monthly)", "Monthly WT, 3 sites",
+     "Undrained PSF", "C", "-", doi("10.1088/2515-7620/ac6295"), NEW10, "abstract", "Imran et al. 2022."),
+    ("C49", "Sarawak eddy-covariance and automated-chamber sites (TROPI / Hokkaido)", "Malaysia, Sarawak", "see papers",
+     "2011-2015 (study-specific)", "Half-hourly GWL at towers; chamber-time GWL", "PSF; oil palm", "C (Sarawak Govt data)", "-",
+     doi("10.1016/j.agrformet.2018.03.025") + " ; " + doi("10.1016/j.agrformet.2020.108189") + " ; " + doi("10.1016/j.agee.2017.11.025") + " ; " + doi("10.1007/s10021-019-00376-8") + " ; " + doi("10.1016/j.scitotenv.2017.02.165"),
+     NEW10, "abstracts", "Wong 2018 (CH4 Feb 2014-Jul 2015), Kiew 2020 (oil palm 2011-2014), Ishikura 2018/2019, Sangok 2017."),
+    ("C50", "Sebungan and Sabaju oil palm estates: water table and fluvial carbon", "Malaysia, Sarawak", "see A12 coordinates",
+     "Aug 2015 - Aug 2016", "WT depth per site (mean, min, max, % time >60 cm)", "Oil palm", "C (data in Cook 2018 thesis)", "-",
+     doi("10.5194/bg-15-7435-2018"), NEW10, "full text (BG)", "Same estates as A12."),
+    ("C51", "Bintulu oil palm and PSF: 128-month soil respiration with WT", "Malaysia, Sarawak", "see paper", "128 months",
+     "Monthly", "Oil palm; PSF", "C (preprint)", "-", doi("10.2139/ssrn.4767267"), NEW10, "abstract", ""),
+    ("C52", "Raja Musa: recovering forest, natural forest, oil palm GHG", "Malaysia, Selangor", "see paper", "Jul 2017 - Dec 2018",
+     "Biweekly GHG with continuous environmental variables", "PSF; oil palm", "C (check DA)", "-", doi("10.3390/w13233372"), NEW10, "abstract", "Azizan et al. 2021."),
+    ("C53", "Johor peat: Parit Madirono catchment; Ayer Hitam North FR", "Malaysia, Johor", "see papers", "see papers", "WT records",
+     "Drained catchment; PSF", "C", "-", doi("10.11113/jt.v38.487") + " ; " + doi("10.4236/jwarp.2021.1312052"), OLD + " / " + NEW10, "abstracts", ""),
+    ("C54", "Bacho peatland subsidence (+ WT-dependent soil respiration at other Thai sites)", "Thailand, Narathiwat", "see paper",
+     ">20 years monthly subsidence", "WT during respiration measurements", "Degraded PSF", "C", "-", doi("10.19189/001c.128481"), OLD,
+     "abstract", ""),
+    ("C55", "Leyte Sab-a Basin peatland land-use conversion", "Philippines, Leyte", "see paper", "see paper", "Spot WT/moisture",
+     "PSF vs cultivated", "C (weak)", "-", doi("10.19189/map.2021.bg.sta.2287"), NEW10, "abstract/web", "Only Philippines lead; no time series."),
+    ("C56", "Papua: Asmat Regency peat survey; SIPALAGA station Sumber Mulya (Merauke)", "Indonesia, Papua",
+     "Sumber Mulya -8.205, 140.216", "2019-2020 (station)", "Spot GWL survey; SIPALAGA station", "Various", "C / B", "-",
+     "Asmat survey (ResearchGate 379805559) ; " + doi("10.1029/2021ms002784"), NEW10, "web + Apers Table B1", "Only Papua records found."),
+    # ---------------- D: compilations and products ----------------
+    ("D2", "PEATCLSM_Trop evaluation set: 87 SEA water-level sites (sheet 'Apers2022_SEA_sites') + simulation output",
+     "SE Asia (+ Congo, Peru, Panama)", "per site", "2000-2020", "Daily/sub-daily; model output global", "All", "A (model output, Zenodo) / B (site data at sources)",
+     doi("10.5281/zenodo.6011689"), doi("10.1029/2021ms002784"), NEW10, "full text (PMC)", "Best single index of SEA WT time series."),
+    ("D3", "OPTRAM satellite WT estimates evaluated with in situ WT", "Indonesia, Malaysia, Peru", "per site", "see paper",
+     "Satellite-derived WT index", "All", "D", "-", doi("10.1029/2024jg008116"), NEW10, "abstract", "Koupaei-Abyazani et al. 2024."),
+    ("D4", "Canal water-table depth from airborne LiDAR; drainage-canal map", "Indonesia (E. Sumatra, W. Kalimantan); SE Asia",
+     "grids", "LiDAR dates", "100 m grid (canal WTD)", "Drained peat", "D", "-",
+     doi("10.3390/w12051486") + " ; " + doi("10.1029/2020av000321"), NEW10, "abstracts", "Vernimmen 2020; Dadap 2021."),
+    ("D5", "Machine-learning GWL maps of a drained peat dome (KFCP data)", "Indonesia, Central Kalimantan", "dome grid", "2010-2012",
+     "Modelled GWL", "Drained/burnt dome", "D", "-", doi("10.1016/j.scitotenv.2022.159701"), NEW10, "abstract", "Hikouei et al. 2023."),
+    ("D6", "Kalimantan peatland fire-risk points with water-table height", "Indonesia, Kalimantan", "grid points", "static",
+     "Water table height per point (derived)", "All", "A (CC-BY; derived)", doi("10.5281/zenodo.17907349"), "-", NEW10, "data file header", ""),
+    ("D7", "Meta-analyses with site-level WTD and GHG/subsidence", "SE Asia", "per study", "published studies to ~2023",
+     "Site means", "All", "D (paper tables/supplements)", doi("10.17528/CIFOR/DATA.00291"),
+     doi("10.1111/j.1365-2486.2009.02016.x") + " ; " + doi("10.19189/001c.128487") + " ; " + doi("10.1007/s11027-013-9511-x") + " ; " + doi("10.1088/1748-9326/10/7/074006") + " ; " + doi("10.1111/gcb.15147") + " ; " + doi("10.1007/s10533-023-01110-2"),
+     OLD + " / " + NEW10, "abstracts", "Couwenberg 2010/2013, Hergoualc'h & Verchot 2014, Carlson 2015, Prananto 2020 (n=372), Swails 2024."),
+]
+
+UPDATES = [
+    ("A3 / A5", "Sulaiman et al. 2023 report daily GWL at the UF location since 1 Sep 1993 (B3); A3 starts in 2004."),
+    ("A6", "Daily WT 2011-2014 at the same Maludam forest is public on figshare (A15); half-hourly WT Nov-Dec 2013 on Zenodo (A16)."),
+    ("A8", "Deshmukh et al. 2020 (GCB) gives the same Acacia tower position (0 30'57\"N, 102 02'E), so the coordinate in A8's file is confirmed."),
+    ("A12", "Cook et al. 2018 (BG) worked at the same Sebungan/Sabaju estates with WT for Aug 2015 - Aug 2016 (C50)."),
+    ("A2", "Hoyt et al. 2019 also has a Damit dome WT record (2012) not included in the Zenodo files (C46)."),
+    ("B1", "Apers et al. 2022 list 59 SIPALAGA station codes with coordinates (sheet 'Apers2022_SEA_sites'); Putra et al. 2025 used 39 Riau stations (Oct 2018 - Dec 2020, daily); A9 stations are SIPALAGA stations."),
+    ("C10-11", "The South Sumatra camera sites are from Sulaeman et al. 2022 (C20), not Evans et al. 2021."),
+    ("Gaps", "Thailand (B9, C54), Vietnam (B10) and Papua (C56) now have leads; Philippines only a spot survey (C55); Sabah (Klias) still has only geophysical WT estimates, no time series."),
+]
+
+APERS_SITES = [
+    ('IN_BR_mdm_trail_10', 'Mendaram', 'Brunei Darussalam', 4.376, 114.355, 'undrained', '2012–2013', 'Cobb et al. (2017)', '(Pristine) peat swamp forest'),
+    ('IN_BR_mdm_trail_6', 'Mendaram', 'Brunei Darussalam', 4.365, 114.354, 'undrained', '2012–2013', 'Cobb et al. (2017)', '(Pristine) peat swamp forest'),
+    ('IN_BR_mdm_trail_7', 'Mendaram', 'Brunei Darussalam', 4.369, 114.354, 'undrained', '2012–2013', 'Cobb et al. (2017)', '(Pristine) peat swamp forest'),
+    ('IN_BR_mdm_trail_8', 'Mendaram', 'Brunei Darussalam', 4.371, 114.355, 'undrained', '2012–2013', 'Cobb et al. (2017)', '(Pristine) peat swamp forest'),
+    ('IN_BRG_140312_02', 'Sadar Jaya', 'Riau', 1.114, 102.039, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140412_02', 'Sungai Guang', 'Riau', -0.088, 103.132, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140806_01', 'Dayun', 'Riau', 0.644, 102.032, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_160205_01', 'Kedaton', 'South Sumatra', -3.416, 104.88, 'undrained', '2019', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_160224_02', 'Cinta Jaya', 'South Sumatra', -3.479, 104.965, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_160611_01', 'Karang Agung', 'South Sumatra', -2.282, 104.411, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621101_02', 'Dandang', 'Central Kalimantan', -3.123, 114.081, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621103_04', 'Bukit Rawi', 'Central Kalimantan', -2.103, 113.976, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621107_02', 'Saka Kajang', 'Central Kalimantan', -2.556, 114.181, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621107_03', 'Garung', 'Central Kalimantan', -2.654, 114.221, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621107_04', 'Pilang', 'Central Kalimantan', -2.436, 114.172, 'undrained', '2019', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_630805_01', 'Pinang Habang', 'South Kalimantan', -2.505, 115.264, 'undrained', '2019', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG16', 'Pulau Damar', 'South Kalimantan', -2.44, 115.369, 'undrained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_Damitdome', 'Damit', 'Brunei Darussalam', 4.405, 114.363, 'undrained', '2012', 'Hoyt et al. (2019)', 'Undrained; previously logged peat swamp forest'),
+    ('IN_Mendaramdome', 'Mendaram', 'Brunei Darussalam', 4.3599, 114.3522, 'undrained', '2013–2014', 'Hoyt et al. (2019)', '(Pristine) peat swamp forest'),
+    ('IN_DB_Peatland', 'Palangkaraya', 'Central Kalimantan', -2.3381, 114.0297, 'undrained', '2004–2007', 'Jauhiainen et al. (2008)', 'Previously deforested and drained peatland; now canal blocking and ferns as main vegetation cover'),
+    ('IN_SebangForest_K', 'Sebangau', 'Central Kalimantan', -2.3214, 113.8953, 'undrained', '2013', 'Könönen et al. (2016)', 'Logged peat swamp forest'),
+    ('IN_SebangRestored_L', 'Sebangau', 'Central Kalimantan', -2.3217, 114.0181, 'undrained', '2012–2013', 'Lampela et al. (2017)', 'Previously deforested and drained peatland; now canal blocking and ferns as main vegetation cover'),
+    ('IN_Sebangau_IJ‐1', 'Tumbang Nusa ‐ Sebangau', 'Central Kalimantan', -2.3533, 114.0913, 'undrained', '2015–2018', 'SATREPS', 'Peat swamp forest'),
+    ('IN_Sebangau_IJ‐2', 'Paduran Sebangau', 'Central Kalimantan', -2.573, 114.023, 'undrained', '2015–2019', 'SATREPS', 'Peat swamp forest'),
+    ('IN_Taka1_Palangkraya', 'Taruna Jaya', 'Central Kalimantan', -2.3174, 114.0596, 'undrained', '2012–2019', 'SATREPS', 'Previously deforested and drained peatland; now canal blocking and regenerating peatland'),
+    ('IN_Taka5_Sebangau', 'Sebangau', 'Central Kalimantan', -2.3196, 114.0581, 'undrained', '2015–2019', 'SATREPS', 'Peat swamp forest'),
+    ('IN_Taruna‐B1', 'Taruna Jaya', 'Central Kalimantan', -2.3214, 114.0695, 'undrained', '2013–2019', 'SATREPS', 'Young forest peatland'),
+    ('IN_AirHitam', 'Air Hitam', 'Jambi', -1.497, 104.116, 'undrained', '2003–2004', 'Taufik et al. (2019)', 'Peat swamp forest'),
+    ('IN_UpperSebangau_PSF', 'Sebangau', 'Central Kalimantan', -2.42, 114.1, 'undrained', '2000–2008', 'Taufik et al. (2019)', 'Peat swamp forest with minor influence of old canals'),
+    ('IN_Undrained_PSF', 'Palangkaraya', 'Central Kalimantan', -2.322, 113.908, 'undrained', '2004–2007', 'Hirano et al. (2015)', 'Peat swamp forest with minor influence of old canals'),
+    ('IN_BRG_140103_01', 'Rimba Panjang', 'Riau', 0.435, 101.299, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140302_02', 'Muntai', 'Riau', 1.517, 102.433, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140402_01', 'Bagan Jaya', 'Riau', -0.569, 102.987, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140405_02', 'Harapan Jaya', 'Riau', -0.477, 102.791, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140411_01', 'Kuala Sebatu', 'Riau', -0.303, 102.985, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140411_02', 'Kuala Sebatu', 'Riau', -0.372, 102.978, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140412_01', 'Sungai Gaung', 'Riau', -0.082, 103.133, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140508_02', 'Merbau', 'Riau', 0.242, 102.229, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140508_03', 'Petani', 'Riau', 0.306, 102.178, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140509_01', 'Kuala Panduk', 'Riau', 0.186, 102.335, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140801_01', 'Kampung Rempak', 'Riau', 0.826, 102.001, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140802_02', 'Penyengat', 'Riau', 0.831, 102.354, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_140810_01', 'Sam Sam', 'Riau', 0.966, 101.072, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_141006_01', 'Semukut', 'Riau', 1.012, 102.551, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_147204_01', 'Bangsal Aceh', 'Riau', 1.628, 101.297, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_147205_01', 'Pelintung', 'Riau', 1.614, 101.646, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_147205_02', 'Teluk Makmur', 'Riau', 1.626, 101.545, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_150611_01', 'Bram Itam Kanan', 'Jambi', -0.908, 103.321, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_150611_02', 'Bram Itam Kanan', 'Jambi', -0.922, 103.355, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_150710_01', 'Sungai Beras', 'Jambi', -1.232, 103.68, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_150710_03', 'Pandan Sajahtera', 'Jambi', -1.298, 103.773, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_160224_01', 'Cinta Jaya', 'South Sumatra', -3.392, 104.977, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_160224_03', 'Cinta Jaya', 'South Sumatra', -3.432, 104.965, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_160609_01', 'Muara Medak', 'South Sumatra', -1.795, 103.929, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_610102_02', 'Berlimang', 'West Kalimantan', 1.379, 109.178, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_610117_01', 'Semata', 'West Kalimantan', 1.515, 109.145, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_610208_01', 'Antibar', 'West Kalimantan', 0.115, 109.262, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_610218_01', 'Anjungan Dalam', 'West Kalimantan', 0.385, 109.02, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_611202_01', 'Simpang Kanan', 'West Kalimantan', 0.111, 109.423, 'drained', '2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_611203_02', 'Simpang Kanan', 'West Kalimantan', -0.088, 109.476, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_611206_01', 'Olak Olak', 'West Kalimantan', -0.491, 109.365, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_611209_01', 'Punggur Kecil', 'West Kalimantan', -0.129, 109.328, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_620309_02', 'Pulang Pisau', 'Central Kalimantan', -2.538, 114.4, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621103_03', 'Sigi', 'Central Kalimantan', -2.032, 113.959, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621105_02', 'Kalawa', 'Central Kalimantan', -2.711, 114.22, 'drained', '2019', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621105_03', 'Buntoi', 'Central Kalimantan', -2.838, 114.175, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621107_06', 'Jabiren', 'Central Kalimantan', -2.549, 114.169, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_621108_01', 'Medura Sebangau', 'Central Kalimantan', -2.903, 113.763, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_627104_04', 'Kereng Bangkirai', 'Central Kalimantan', -2.287, 113.88, 'drained', '2019', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_630708_01', 'Haur Gading', 'South Kalimantan', -2.462, 115.401, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_631104_01', 'Mantimin', 'South Kalimantan', -2.397, 115.386, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG_910111_01', 'Sumber Mulya', 'Papua', -8.205, 140.216, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG11', 'Anjir Kalampan', 'Central Kalimantan', -2.819, 114.313, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG12', 'Katunjung', 'Central Kalimantan', -2.239, 114.464, 'drained', '2019', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG3', 'Sumber Agung', 'Jambi', -1.711, 103.882, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_BRG5', 'Gedong Karya', 'Jambi', -1.382, 104.026, 'drained', '2019–2020', 'SIPALAGA', 'Information not available'),
+    ('IN_Drained_PSF', 'Palangkaraya', 'Central Kalimantan', -2.346, 114.036, 'drained', '2004–2007', 'Hirano et al. (2015)', 'Drained and previously logged secondary peat swamp forest'),
+    ('IN_Jambi1', 'Tanjung Jabung Timur', 'Jambi', -1.238, 103.59, 'drained', '2016–2019', 'SATREPS', 'Drained peat swamp forest'),
+    ('IN_DF_Peatland', 'Palangkaraya', 'Central Kalimantan', -2.345, 114.0367, 'drained', '2004–2007', 'Jauhiainen et al. (2008)', 'Drained peat swamp forest'),
+    ('IN_Kalbar1', 'Kalbar', 'West Kalimantan', -0.21, 109.395, 'drained', '2016–2020', 'SATREPS', 'Small‐holder agriculture (including oil palm plantations)'),
+    ('IN_Kalteng1', 'Kalteng', 'Central Kalimantan', -2.32, 114.058, 'drained', '2016–2020', 'SATREPS', 'Drained and cleared area between two peat swamp forests'),
+    ('IN_N_Selangor', 'Raja Musa', 'North Selangor', 3.4256, 101.3067, 'drained', '2018–2019', 'Unpublished', 'Drained small‐holder agriculture (mainly second or third rotation oil palm on shallow peat)'),
+    ('IN_Palangkaraya', 'Hampangen', 'Central Kalimantan', -1.92, 113.5787, 'drained', '2018–2019', 'Unpublished', 'Drained small‐holder agriculture (including oil palm and rubber tree plantations)'),
+    ('IN_Pontianak', 'Teluk Empening', 'West Kalimantan', -0.3807, 109.5914, 'drained', '2018–2019', 'Unpublished', 'Drained small‐holder agriculture (mainly ginger and rubber tree plantations on shallow peat)'),
+    ('IN_Riau1', 'Tanjung Leban', 'Riau', 1.6424, 101.7372, 'drained', '2016–2017', 'SATREPS', 'Drained peat swamp forest'),
+    ('IN_Taka4', 'Palangkaraya', 'Central Kalimantan', -2.5781, 114.5724, 'drained', '2012–2014', 'SATREPS', 'Oil palm plantation'),
+    ('IN_Taka7', 'Pontianak', 'West Kalimantan', 0.0052, 109.6971, 'drained', '2013–2015', 'SATREPS', 'Oil palm plantation'),
+]
+
+
+COLS = ["ID", "Site / dataset", "Country, region", "Lat, Lon", "Period", "WTD resolution / method", "Land use",
+        "Availability", "Data link", "Paper(s)", "Publication window", "Verified via", "Notes"]
+
+
+def md_cell(x):
+    return str(x).replace("|", "/")
+
+
+def write_md():
+    L = ["# SE Asian peatland WTD: additional sites and datasets, 2006-2026\n",
+         "Searched %s. Everything here is **in addition to** `INDEX.md` (A1-D1); nothing was downloaded. "
+         "Availability: **A** public download, **B** network/portal/on request, **C** only in the paper, **D** compilation or "
+         "gridded/derived product. \"≈\" = approximate coordinates; \"see paper\" = the coordinates are in the paper but "
+         "could not be read (publisher blocked or not stated in the abstract). The *Verified via* column says how far each row "
+         "was checked.\n" % SEARCHED,
+         "## How the search was done\n",
+         "- **Literature:** 246 Crossref queries (24 regions x 8 topics + 54 site/network names) and a Europe PMC full-text query, "
+         "2006-2026: 3813 records, 296 after keyword/region filtering, all screened by title and abstract; plus ~100 targeted "
+         "title searches for known studies. OpenAlex and Semantic Scholar were rate-limited from this environment and could not be used.",
+         "- **Data repositories:** DataCite, Zenodo, figshare, Dryad, Mendeley Data, PANGAEA, HydroShare, Harvard/CIFOR Dataverse.",
+         "- **Networks and grey literature:** web searches for SIPALAGA, SATREPS, KFCP, BNF, APRIL, SESAME and for Thailand, Vietnam, "
+         "Philippines, Sabah and Papua.",
+         "- **Full text** was read where reachable (Europe PMC, Copernicus, Nature, Frontiers); Wiley, Elsevier, Springer, MDPI, IOP "
+         "and Taylor & Francis blocked automated access, so those rows rest on abstracts.",
+         "- **Apers et al. 2022, Table B1** lists 87 SE Asian water-level sites with coordinates and years; it is reproduced in the "
+         "Excel sheet and summarised below.\n",
+         "## Updates to existing INDEX entries\n", "| Entry | Update |", "|---|---|"]
+    for a, b in UPDATES:
+        L.append("| %s | %s |" % (a, md_cell(b)))
+    L.append("")
+    groups = [("A", "A: public repositories (new)"), ("B", "B: networks, portals, on request"),
+              ("C", "C: sites only in papers"), ("D", "D: compilations and products")]
+    for g, title in groups:
+        L.append("## %s\n" % title)
+        L.append("| " + " | ".join(COLS) + " |")
+        L.append("|" + "---|" * len(COLS))
+        for r in ROWS:
+            if r[0].startswith(g):
+                L.append("| " + " | ".join(md_cell(x) for x in r) + " |")
+        L.append("")
+    L.append("## Water-level sites listed by Apers et al. 2022 (Table B1), SE Asia only\n")
+    from collections import Counter
+    src = Counter(s[7] for s in APERS_SITES)
+    L.append("%d sites: %s. Full list with coordinates in `EXPANDED_2006-2026.xlsx`, sheet *Apers2022_SEA_sites*.\n" % (
+        len(APERS_SITES), ", ".join("%s %d" % (k, v) for k, v in src.most_common())))
+    L.append("| Site ID | Place | Province | Lat | Lon | Drainage | Years | Source |")
+    L.append("|---|---|---|---|---|---|---|---|")
+    for s in APERS_SITES:
+        if s[7] != "SIPALAGA":
+            L.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % s[:8])
+    L.append("\nSIPALAGA stations (%d) are listed only in the Excel sheet.\n" % src["SIPALAGA"])
+    with open(os.path.join(HERE, "EXPANDED_2006-2026.md"), "w") as fh:
+        fh.write("\n".join(L))
+
+
+def write_xlsx():
+    wb = Workbook()
+    hf, hfill = Font(bold=True, color="FFFFFF"), PatternFill("solid", fgColor="305496")
+
+    def sheet(ws, header, rows, widths):
+        ws.append(header)
+        for c in ws[1]:
+            c.font, c.fill = hf, hfill
+        for r in rows:
+            ws.append(list(r))
+        for i, w in enumerate(widths, 1):
+            ws.column_dimensions[get_column_letter(i)].width = w
+        for row in ws.iter_rows():
+            for c in row:
+                c.alignment = Alignment(wrap_text=True, vertical="top")
+        ws.freeze_panes = "C2"
+        ws.auto_filter.ref = ws.dimensions
+
+    ws = wb.active
+    ws.title = "New sites and datasets"
+    sheet(ws, COLS, ROWS, [7, 45, 26, 30, 24, 34, 24, 26, 40, 45, 24, 22, 45])
+    sheet(wb.create_sheet("Apers2022_SEA_sites"),
+          ["Site ID", "Place", "Province/country", "Lat", "Lon", "Drainage", "Years", "Source", "Land cover"], APERS_SITES,
+          [22, 20, 22, 9, 9, 11, 11, 22, 45])
+    sheet(wb.create_sheet("Updates to INDEX"), ["Entry", "Update"], UPDATES, [12, 120])
+    wb.save(os.path.join(HERE, "EXPANDED_2006-2026.xlsx"))
+
+
+if __name__ == "__main__":
+    write_md()
+    write_xlsx()
+    print("wrote EXPANDED_2006-2026.md/.xlsx: %d rows, %d Apers sites" % (len(ROWS), len(APERS_SITES)))
