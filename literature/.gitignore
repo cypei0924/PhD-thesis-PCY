@@ -1,0 +1,8 @@
+# Papers and supplementary PDFs are kept in the cloud workspace only (copyright);
+# re-download open-access ones locally with download_papers.py.
+*.pdf
+*/paper/
+
+# Files over GitHub's 100 MB limit are downloaded into _large/ and not pushed;
+# re-download them locally with download_data.py.
+*/data/_large/
