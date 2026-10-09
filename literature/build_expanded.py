@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
-"""Write EXPANDED_2006-2026.md and EXPANDED_2006-2026.xlsx: SE Asian peatland WTD sites and datasets found in the
-2006-2026 literature search that are NOT already in INDEX.md. Nothing is downloaded. Needs openpyxl.
+"""Write EXPANDED_2006-2026.md: SE Asian peatland WTD sites and datasets found in the 2006-2026 literature search
+that are NOT already in INDEX.md. Nothing is downloaded. EXPANDED_2006-2026.xlsx is written from the same rows by
+format_expanded.py, in the layout of SEA_peatland_WTD_datasets.xlsx.
 
 Row facts come from the papers (abstract or full text, as stated per row), repository metadata, or Table B1 of
 Apers et al. 2022 (listed separately in APERS_SITES). "≈" marks approximate coordinates.
 """
 import os
-
-from openpyxl import Workbook
-from openpyxl.styles import Alignment, Font, PatternFill
-from openpyxl.utils import get_column_letter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SEARCHED = "2026-09-26"
@@ -68,7 +65,7 @@ ROWS = [
      "B (paper: 'monthly GWL will be public via BRIN two years after the project ends')", "BRIN (future)",
      doi("10.1038/s41598-023-27393-x"), NEW10, "full text (PMC)",
      "Same location as A3 UF; extends it back to 1993 (27 years). Sulaiman et al. 2023 Sci Rep."),
-    ("B4", "SATREPS / Japan-Indonesia peat monitoring sites (11 sites, see sheet 'Apers2022_SEA_sites')", "Indonesia: C. Kalimantan, W. Kalimantan, Jambi, Riau",
+    ("B4", "SATREPS / Japan-Indonesia peat monitoring sites (11 sites, see the Apers table below)", "Indonesia: C. Kalimantan, W. Kalimantan, Jambi, Riau",
      "per site (e.g. Tumbang Nusa -2.3533, 114.0913; Taruna Jaya -2.3174, 114.0596; Pontianak oil palm 0.0052, 109.6971)",
      "2012-2020 (site-specific)", "Continuous GWL loggers; published as graphs", "PSF, regenerating, oil palm, smallholder",
      "B (graphs on kalimantan88.sakura.ne.jp; digitised by Apers 2022)", "http://kalimantan88.sakura.ne.jp/",
@@ -217,7 +214,7 @@ ROWS = [
      "Sumber Mulya -8.205, 140.216", "2019-2020 (station)", "Spot GWL survey; SIPALAGA station", "Various", "C / B", "-",
      "Asmat survey (ResearchGate 379805559) ; " + doi("10.1029/2021ms002784"), NEW10, "web + Apers Table B1", "Only Papua records found."),
     # ---------------- D: compilations and products ----------------
-    ("D2", "PEATCLSM_Trop evaluation set: 87 SEA water-level sites (sheet 'Apers2022_SEA_sites') + simulation output",
+    ("D2", "PEATCLSM_Trop evaluation set: 87 SEA water-level sites (Apers table below) + simulation output",
      "SE Asia (+ Congo, Peru, Panama)", "per site", "2000-2020", "Daily/sub-daily; model output global", "All", "A (model output, Zenodo) / B (site data at sources)",
      doi("10.5281/zenodo.6011689"), doi("10.1029/2021ms002784"), NEW10, "full text (PMC)", "Best single index of SEA WT time series."),
     ("D3", "OPTRAM satellite WT estimates evaluated with in situ WT", "Indonesia, Malaysia, Peru", "per site", "see paper",
@@ -241,7 +238,7 @@ UPDATES = [
     ("A8", "Deshmukh et al. 2020 (GCB) gives the same Acacia tower position (0 30'57\"N, 102 02'E), so the coordinate in A8's file is confirmed."),
     ("A12", "Cook et al. 2018 (BG) worked at the same Sebungan/Sabaju estates with WT for Aug 2015 - Aug 2016 (C50)."),
     ("A2", "Hoyt et al. 2019 also has a Damit dome WT record (2012) not included in the Zenodo files (C46)."),
-    ("B1", "Apers et al. 2022 list 59 SIPALAGA station codes with coordinates (sheet 'Apers2022_SEA_sites'); Putra et al. 2025 used 39 Riau stations (Oct 2018 - Dec 2020, daily); A9 stations are SIPALAGA stations."),
+    ("B1", "Apers et al. 2022 list 59 SIPALAGA station codes with coordinates (Apers table below; xlsx entry B13); Putra et al. 2025 used 39 Riau stations (Oct 2018 - Dec 2020, daily); A9 stations are SIPALAGA stations."),
     ("C10-11", "The South Sumatra camera sites are from Sulaeman et al. 2022 (C20), not Evans et al. 2021."),
     ("Gaps", "Thailand (B9, C54), Vietnam (B10) and Papua (C56) now have leads; Philippines only a spot survey (C55); Sabah (Klias) still has only geophysical WT estimates, no time series."),
 ]
@@ -352,6 +349,8 @@ def write_md():
          "gridded/derived product. \"≈\" = approximate coordinates; \"see paper\" = the coordinates are in the paper but "
          "could not be read (publisher blocked or not stated in the abstract). The *Verified via* column says how far each row "
          "was checked.\n" % SEARCHED,
+         "`EXPANDED_2006-2026.xlsx` holds the same rows in the layout of `SEA_peatland_WTD_datasets.xlsx` (one row per site, "
+         "IDs A15+, B4+, C15+, D9+ continuing that table); its sheet *ID mapping* gives the ID used here for each row.\n",
          "## How the search was done\n",
          "- **Literature:** 246 Crossref queries (24 regions x 8 topics + 54 site/network names) and a Europe PMC full-text query, "
          "2006-2026: 3813 records, 296 after keyword/region filtering, all screened by title and abstract; plus ~100 targeted "
@@ -361,8 +360,9 @@ def write_md():
          "Philippines, Sabah and Papua.",
          "- **Full text** was read where reachable (Europe PMC, Copernicus, Nature, Frontiers); Wiley, Elsevier, Springer, MDPI, IOP "
          "and Taylor & Francis blocked automated access, so those rows rest on abstracts.",
-         "- **Apers et al. 2022, Table B1** lists 87 SE Asian water-level sites with coordinates and years; it is reproduced in the "
-         "Excel sheet and summarised below.\n",
+         "- **Apers et al. 2022, Table B1** lists 87 SE Asian water-level sites with coordinates and years; 80 of them are rows of "
+         "the Excel file (B5, B13, C15-C18, C48, C58, C59); the other 7 (Mendaram, Palangkaraya UF/DF) are INDEX A1-A3. "
+         "All are summarised below.\n",
          "## Updates to existing INDEX entries\n", "| Entry | Update |", "|---|---|"]
     for a, b in UPDATES:
         L.append("| %s | %s |" % (a, md_cell(b)))
@@ -380,47 +380,18 @@ def write_md():
     L.append("## Water-level sites listed by Apers et al. 2022 (Table B1), SE Asia only\n")
     from collections import Counter
     src = Counter(s[7] for s in APERS_SITES)
-    L.append("%d sites: %s. Full list with coordinates in `EXPANDED_2006-2026.xlsx`, sheet *Apers2022_SEA_sites*.\n" % (
+    L.append("%d sites: %s. Sites not already in INDEX A1-A3 are rows, with coordinates, in `EXPANDED_2006-2026.xlsx`.\n" % (
         len(APERS_SITES), ", ".join("%s %d" % (k, v) for k, v in src.most_common())))
     L.append("| Site ID | Place | Province | Lat | Lon | Drainage | Years | Source |")
     L.append("|---|---|---|---|---|---|---|---|")
     for s in APERS_SITES:
         if s[7] != "SIPALAGA":
             L.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % s[:8])
-    L.append("\nSIPALAGA stations (%d) are listed only in the Excel sheet.\n" % src["SIPALAGA"])
+    L.append("\nSIPALAGA stations (%d) are listed only in the Excel file (entry B13).\n" % src["SIPALAGA"])
     with open(os.path.join(HERE, "EXPANDED_2006-2026.md"), "w") as fh:
         fh.write("\n".join(L))
 
 
-def write_xlsx():
-    wb = Workbook()
-    hf, hfill = Font(bold=True, color="FFFFFF"), PatternFill("solid", fgColor="305496")
-
-    def sheet(ws, header, rows, widths):
-        ws.append(header)
-        for c in ws[1]:
-            c.font, c.fill = hf, hfill
-        for r in rows:
-            ws.append(list(r))
-        for i, w in enumerate(widths, 1):
-            ws.column_dimensions[get_column_letter(i)].width = w
-        for row in ws.iter_rows():
-            for c in row:
-                c.alignment = Alignment(wrap_text=True, vertical="top")
-        ws.freeze_panes = "C2"
-        ws.auto_filter.ref = ws.dimensions
-
-    ws = wb.active
-    ws.title = "New sites and datasets"
-    sheet(ws, COLS, ROWS, [7, 45, 26, 30, 24, 34, 24, 26, 40, 45, 24, 22, 45])
-    sheet(wb.create_sheet("Apers2022_SEA_sites"),
-          ["Site ID", "Place", "Province/country", "Lat", "Lon", "Drainage", "Years", "Source", "Land cover"], APERS_SITES,
-          [22, 20, 22, 9, 9, 11, 11, 22, 45])
-    sheet(wb.create_sheet("Updates to INDEX"), ["Entry", "Update"], UPDATES, [12, 120])
-    wb.save(os.path.join(HERE, "EXPANDED_2006-2026.xlsx"))
-
-
 if __name__ == "__main__":
     write_md()
-    write_xlsx()
-    print("wrote EXPANDED_2006-2026.md/.xlsx: %d rows, %d Apers sites" % (len(ROWS), len(APERS_SITES)))
+    print("wrote EXPANDED_2006-2026.md: %d rows, %d Apers sites" % (len(ROWS), len(APERS_SITES)))
