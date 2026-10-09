@@ -1,0 +1,33 @@
+A09 V208U UNCERTAINTY — A09_V208U_V100
+========================================================
+model_retrained=NO
+uncertainty_components=temporal_composite + drying_bootstrap + global_model_reference
+model_and_temporal_uncertainty_combined=NO
+
+wet_scene_rasters=23
+dry_scene_rasters=23
+final_common_pixels=20921
+bootstrap_eligible_pixels=20890
+bootstrap_eligible_fraction=0.998518
+bootstrap_replicates=500
+bootstrap_seed=20260909
+
+wet_robust_sigma_median_m=0.117953
+dry_robust_sigma_median_m=0.124149
+drying_pi90_width_median_m=0.333797
+p_drying_gt0_median=1.000000
+share_pixels_p_drying_ge_0.95=0.998947
+share_pixels_p_drying_ge_0.99=0.998899
+
+GLOBAL MODEL GENERALIZATION REFERENCE:
+spatial_pooled_rmse_m=0.317012
+spatial_pooled_mae_m=0.253366
+spatial_macro_rmse_m=0.295636
+spatial_pooled_r2=0.461067
+
+IMPORTANT:
+OOF residual quantile prediction intervals are NOT computed here because
+the row-level corrected-time OOF residual file is not part of the current input.
+Do not convert RMSE into a pixelwise PI.
+
+V208U_GATE=PASS

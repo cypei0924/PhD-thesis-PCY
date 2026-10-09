@@ -351,6 +351,11 @@ def write_md():
          "was checked.\n" % SEARCHED,
          "`EXPANDED_2006-2026.xlsx` holds the same rows in the layout of `SEA_peatland_WTD_datasets.xlsx` (one row per site, "
          "IDs A15+, B4+, C15+, D9+ continuing that table); its sheet *ID mapping* gives the ID used here for each row.\n",
+         "**October 2026 update.** The xlsx now also has the entries found by a second search (A34, C60-C65, D15, with the IDs "
+         "of your updated table), and the values that reading the papers and data files corrected (sheet *Changes after reading "
+         "papers*). The rows below are the original search results and are not updated; the checked facts, downloads and "
+         "data-availability statements for every entry are in `DATA_SUMMARY.md`, and the changes for your own table in "
+         "`UPDATES_2026-10.xlsx`.\n",
          "## How the search was done\n",
          "- **Literature:** 246 Crossref queries (24 regions x 8 topics + 54 site/network names) and a Europe PMC full-text query, "
          "2006-2026: 3813 records, 296 after keyword/region filtering, all screened by title and abstract; plus ~100 targeted "

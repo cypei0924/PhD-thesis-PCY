@@ -12,3 +12,7 @@
 
 # Python bytecode (format_expanded.py imports build_expanded.py)
 __pycache__/
+
+# Unfinished downloads and saved error pages (kept where they were made, not pushed)
+*.part
+*.FAILED_*.html

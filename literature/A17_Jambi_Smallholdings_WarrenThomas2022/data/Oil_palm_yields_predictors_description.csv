@@ -1,0 +1,81 @@
+Variable,Description
+ele,Elevation of plot
+Plot_ID,ID code of plot
+Site_short,Site name (short)
+Habitat,Habitat type
+Peat_depth,Peat depth (metres)
+pH_Mean,pH of soil samples taken per plot - mean
+pH_SD,pH of soil samples taken per plot - standard deviation
+pH_SE,pH of soil samples taken per plot - standard error
+pH_UpCI,pH of soil samples taken per plot - lower confidence interval 95%
+pH_LoCI,pH of soil samples taken per plot - upper confidence interval 95%
+UD_Mean,Understorey density of soil samples taken per plot - mean
+UD_SD,Understorey density of soil samples taken per plot - standard deviation
+UD_SE,Understorey density of soil samples taken per plot - standard error
+UD_UpCI,Understorey density of soil samples taken per plot - lower confidence interval 95%
+UD_LoCI,Understorey density of soil samples taken per plot - upper confidence interval 95%
+VH_Mean,Vegetation height (herbaceous understorey) of soil samples taken per plot - mean
+VH_SD,Vegetation height (herbaceous understorey) of soil samples taken per plot - standard deviation
+VH_SE,Vegetation height (herbaceous understorey) of soil samples taken per plot - standard error
+VH_UpCI,Vegetation height (herbaceous understorey) of soil samples taken per plot - lower confidence interval 95%
+VH_LoCI,Vegetation height (herbaceous understorey) of soil samples taken per plot - upper confidence interval 95%
+VC_Mean,Vegetation cover (herbaceous understorey) of soil samples taken per plot - mean
+VC_SD,Vegetation cover (herbaceous understorey) of soil samples taken per plot - standard deviation
+VC_SE,Vegetation cover (herbaceous understorey) of soil samples taken per plot - standard error
+VC_UpCI,Vegetation cover (herbaceous understorey) of soil samples taken per plot - lower confidence interval 95%
+VC_LoCI,Vegetation cover (herbaceous understorey) of soil samples taken per plot - upper confidence interval 95%
+MC_Mean,Moss cover (herbaceous understorey) of soil samples taken per plot - mean
+MC_SD,Moss cover (herbaceous understorey) of soil samples taken per plot - standard deviation
+MC_SE,Moss cover (herbaceous understorey) of soil samples taken per plot - standard error
+MC_UpCI,Moss cover (herbaceous understorey) of soil samples taken per plot - lower confidence interval 95%
+MC_LoCI,Moss cover (herbaceous understorey) of soil samples taken per plot - upper confidence interval 95%
+Fall_lean_sum,Fallen or leaning oil palms (total per plot)
+Fall_lean_dens,Fallen or leaning oil palms (density per ha)
+Sprich_OP_trees,Non-oil-palm trees on farm - species richness per plot
+Count_OP_trees,Non-oil-palm trees on farm - stem count per plot
+Dens_OP_trees_ha,Non-oil-palm trees on farm - stem density per ha
+Sprich_OP_trees_ha,Non-oil-palm trees on farm - species richness per ha
+Basal_OP_trees,Non-oil-palm trees on farm - basal area
+Basal_OP_trees_ha,Non-oil-palm trees on farm - basal area per ha
+OP_stems,Oil palm trees - stem count per plot
+OP_density_ha,Oil palm trees - stem density per ha
+Wat_min_cm,Water table depth - minimum of all measurements over sampling period (deepest depth)
+Wat_max_cm,Water table depth - maximum of all measurements over sampling period (shallowest depth)
+Wat_mean_cm,Water table depth - mean of all measurements over sampling period
+Wat_SD_cm,Water table depth - standard deviation of all measurements over sampling period
+Wat_n_rec,Water table depth - number of records over sampling period
+Wat_n_rec_sub_40,Water table depth - number of records over sampling period below -40cm below ground
+Wat_n_rec_sub_20,Water table depth - number of records over sampling period below -20cm below ground
+Wat_n_rec_sub_10,Water table depth - number of records over sampling period below -10cm below ground
+Wat_n_rec_sub_grnd,Water table depth - number of records over sampling period below ground
+Wat_n_rec_above_grnd,Water table depth - number of records  over sampling period above ground
+Wat_sub_40_prop,Water table depth - proportion of records over sampling period below -40cm below ground
+Wat_sub_20_prop,Water table depth - proportion of records over sampling period below -20cm below ground
+Wat_sub_grnd_prop,Water table depth - proportion of records over sampling period below ground
+For_dist,Distance to any forest detected in land cover classification (including fragments)
+Scr_dist,Distance to any scrub detected in land cover classification
+For_block_dist,Distance to edge of contiguous forest block as detected in land cover classification
+Annual_yield,Annual oil palm yield in tonnes per ha based on yields reported in interviews and farm area
+LAI,Leaf area index
+Canopy,Canopy cover
+Site,Site name (full)
+Site_order,Site order (to use when plotting)
+UD_I_Mean,Inverse mean understorey density (higher values = greater complexity)
+Veg_PC1,Vegetation variables principal components analysis - principal component 1
+Veg_PC2,Vegetation variables principal components analysis - principal component 2
+Area_ha_reported,Farm area as reported during interviews - hectares
+Year_planted,Year oil palms planted as reported during interviews
+Total_oil_palm_plants,Total oil palm plants present on farm
+Oil_palm_density_ha_reported,Total oil palm plants present on farm as reported in interviews
+Origin_quality,Origin of oil palm planting material as reported during interviews
+Fertiliser,Fertiliser application as reported during interviews
+Fertiliser_freq_per_year,Number of times fertiliser applied per year as reported during interviews
+Fert_sufficiency,Number of key nutrients applied (maximum 4) as reported during interviews
+Dolomite,Application of dolomite (to increase soil pH) as reported during interviews
+Pesticide,Application of pesticides as reported during interviews
+Herbicide,Application of herbicides as reported during interviews
+Herbicide_frew_EWT,Frequency of herbicide application per year as reported during interviews
+Frond_removal,Removal of oil palm fronds as reported during interviews
+Harvest_freq_per_month,Harvest frequency per month as reported during interviews
+OP_age,Age of oil palms in years
+Annual_yield_LOG,Log of annual oil palm yield per ha

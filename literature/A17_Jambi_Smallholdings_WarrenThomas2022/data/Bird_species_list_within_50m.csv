@@ -1,0 +1,125 @@
+Species,Scientific_name,Species_code,IUCN,Dependence_EWT,Dependence_strict,Range
+Abbott's Babbler,Malacocincla abbotti,ababer,LC,High_tree,No,8900000
+Ashy Tailorbird,Orthotomus ruficeps,asorrd,LC,Generalist,No,4670000
+Banded Woodpecker,Chrysophlegma miniaceum,baoder,LC,High_tree,No,3920000
+Barred Cuckoo Dove,Macropygia unchall,backve,LC,High_tree,No,12900000
+Black-naped Monarch,Hypothymis azurea,bledch,LC,High_tree,No,19800000
+Chestnut-rumped Babbler,Stachyris maculata,chruer,NT,Forest,Yes,2810000
+Cream-vented Bulbul,Pycnonotus simplex,crteul,LC,Forest,No,4020000
+Crimson-breasted Flowerpecker,Prionochilus percussus,crreer,LC,High_tree,No,3900000
+Crimson-winged Woodpecker,Picus puniceus,criner,LC,High_tree,No,4200000
+Dark-necked Tailorbird,Orthotomus atrogularis,daedrd,LC,High_tree,No,7190000
+Fluffy-backed Tit-babbler,Macronus ptilosus,flcker,NT,High_tree,Yes,3590000
+Gold-whiskered Barbet,Psilopogon chrysopogon,gokeet,LC,High_tree,No,3470000
+Greater Green Leafbird,Chloropsis sonnerati,grrerd,VU,High_tree,No,4280000
+Greater Racquet-tailed Drongo,Dicrurus paradiseus,gracgo,LC,High_tree,No,13900000
+Green Iora,Aegithina viridissima,grara,NT,High_tree,Yes,3780000
+Green-billed Malkoha,Phaenicophaeus tristis,grleha,LC,Generalist,No,11400000
+Hair-crested Drongo,Dicrurus hottentottus,hatego,LC,High_tree,No,17000000
+Large Wren-Babbler,Turdinus macrodactylus,lanber,NT,Forest,Yes,1360000
+Lesser Green Leafbird,Chloropsis cyanopogon,leeerd,NT,High_tree,No,3380000
+Olive-winged Bulbul,Pycnonotus plumosus,olgeul,LC,Generalist,No,4570000
+Oriental Dwarf-kingfisher,Ceyx erithaca,ordwer,LC,High_tree,No,14400000
+Red-crowned Barbet,Psilopogon rafflesii,reedet,NT,High_tree,No,3180000
+Red-throated Barbet,Psilopogon mystacophanos,reteet,NT,High_tree,No,4240000
+Rufous-tailed Shama,Trichixos pyrropygus,ruilma,NT,High_tree,No,2910000
+Rufous-winged Philentoma,Philentoma pyrhoptera,rungma,LC,Forest,Yes,3680000
+Short-tailed Babbler,Trichastoma malaccense,shleer,NT,High_tree,No,3190000
+Yellow-breasted Flowerpecker,Prionochilus maculatus,yeeaer,LC,High_tree,No,3820000
+Black Hornbill,Anthracoceros malayanus,blnbll,VU,Forest,Yes,3050000
+Black-eared Barbet,Psilopogon duvaucelii,bledet,LC,High_tree,No,3160000
+Blyth's Paradise Flycatcher,Terpsiphone affinis,blraer,LC,Generalist,No,7960000
+Chequer-throated Yellownape,Chrysophlegma humii,chhrpe,NT,High_tree,No,3410000
+Chestnut-winged Babbler,Cyanoderma erythropterum,chwier,LC,High_tree,No,1690000
+Ferruginous Babbler,Trichastoma bicolor,feouer,LC,High_tree,No,3110000
+Hook-billed Bulbul,Setornis criniger,hoedul,VU,Forest,No,2000000
+Little Spiderhunter,Arachnothera longirostra,liider,LC,Generalist,No,12200000
+Red-eyed Bulbul,Pycnonotus brunneus,reulul,LC,High_tree,No,3610000
+Scarlet-rumped Trogon,Harpactes duvaucelii,scumon,NT,High_tree,No,3830000
+Spectacled Bulbul,Pycnonotus erythropthalmos,spedul,LC,High_tree,No,3550000
+Black-and-Yellow Broadbill,Eurylaimus ochromalus,blyell,NT,High_tree,No,4200000
+Buff-vented Bulbul,Iole charlottae,buedul,NT,High_tree,No,3930000
+Diard's Trogon,Harpactes diardii,diogon,NT,High_tree,No,3250000
+Moustached Babbler,Malacopteron magnirostre,moeder,LC,Forest,No,3600000
+Raffles's Malkoha,Rhinortha chlorophaea,ramaha,LC,High_tree,No,3920000
+Ruby-cheeked Sunbird,Chalcoparia singalensis,rukerd,LC,High_tree,No,8600000
+Sooty-capped Babbler,Malacopteron affine,sopeer,NT,High_tree,No,3100000
+Bar-winged Prinia,Prinia familiaris,badpia,NT,Generalist,No,1010000
+Common Hill Myna,Gracula religiosa,collna,LC,High_tree,No,12500000
+Eastern Spotted Dove,Spilopelia chinensis,eapove,LC,Generalist,No,16800000
+Grey-capped Emerald Dove,Chalcophaps indica,gredve,LC,Generalist,No,21300000
+Javan Myna,Acridotheres javanicus,jaana,VU,Open,No,184000
+Pink-necked Green-pigeon,Treron vernans,piedon,LC,High_tree,No,9130000
+Slender-billed Crow,Corvus enca,slilow,LC,Generalist,No,7200000
+Sooty-headed Bulbul,Pycnonotus aurigaster,sodeul,LC,Generalist,No,10800000
+Sunda Pied Fantail,Rhipidura javanica,sudfil,LC,Generalist,No,5960000
+White-breasted Kingfisher,Halcyon smyrnensis,whaser,LC,Generalist,No,24700000
+Yellow-vented Bulbul,Pycnonotus goiavier,yentul,LC,Generalist,No,8070000
+Zebra Dove,Geopelia striata,zeeve,LC,Open,No,6960000
+Black-naped Oriole,Oriolus chinensis,bledle,LC,Generalist,No,17400000
+Common Iora,Aegithina tiphia,corara,LC,Generalist,No,14900000
+Eurasian Tree Sparrow,Passer montanus,eutrow,LC,Generalist,No,98300000
+Lesser Coucal,Centropus bengalensis,leucal,LC,Open,No,21100000
+Long-tailed Parakeet,Psittacula longicauda,loedet,VU,High_tree,No,4300000
+Plaintive Cuckoo,Cacomantis merulinus,plecoo,LC,Generalist,No,12900000
+Common Flameback,Dinopium javanense,coamck,LC,Generalist,No,11500000
+Olive-backed Sunbird,Cinnyris jugularis,olkerd,LC,Generalist,No,22400000
+Long-tailed Shrike,Lanius schach,loedke,LC,Generalist,No,28800000
+Barn Swallow,Hirundo rustica,baloow,LC,Open,No,193000000
+Brown-throated Sunbird,Anthreptes malacensis,broard,LC,Generalist,No,9000000
+Sunda Pygmy Woodpecker,Picoides moluccensis,sumyer,LC,Generalist,No,4110000
+Collared Kingfisher,Todiramphus chloris,cokier,LC,Generalist,No,55200000
+Greater Coucal,Centropus sinensis,groual,LC,Generalist,No,19600000
+Rufous-tailed Tailorbird,Orthotomus sericeus,ruilrd,LC,Generalist,No,4430000
+Black-winged Kite,Elanus caeruleus,blgete,LC,Open,No,97800000
+Red Junglefowl,Gallus gallus,reefwl,LC,Generalist,No,33900000
+Rufous Woodpecker,Micropternus brachyurus,ruoder,LC,High_tree,No,16800000
+White-breasted Waterhen,Amaurornis phoenicurus,whasen,LC,Generalist,No,39300000
+Yellow-bellied Prinia,Prinia flaviventris,yellia,LC,Generalist,No,12900000
+Blue-crowned Hanging Parrot,Loriculus galgulus,blneot,LC,High_tree,No,3620000
+Large-tailed Nightjar,Caprimulgus macrurus,lalear,LC,Generalist,No,22200000
+Crimson Sunbird,Aethopyga siparaja,crunrd,LC,Generalist,No,12500000
+Yellow-rumped Flycatcher,Ficedula zanthopygia,yemper,LC,Generalist,No,998000
+Plain Flowerpecker,Dicaeum minullum,plweer,LC,Generalist,No,13600000
+Stork-billed Kingfisher,Pelargopsis capensis,stleer,LC,Generalist,No,16800000
+Black-Browed Barbet,Psilopogon oorti,blweet,LC,High_tree,No,572000
+Black-capped Babbler,Pellorneum nigrocapitatum,blpeer,LC,High_tree,No,3560000
+Purple-naped Spiderhunter,Arachnothera hypogrammica,pupeer,LC,High_tree,No,6220000
+Rhinoceros Hornbill,Buceros rhinoceros,rhosll,VU,Forest,Yes,3370000
+Scaly-crowned Babbler,Malacopteron cinereum,scwner,LC,Forest,No,4910000
+Scarlet Minivet,Pericrocotus flammeus,scinet,LC,High_tree,No,19300000
+Black-headed Bulbul,Brachypodius atriceps,bldeul,LC,High_tree,No,8120000
+Black-winged Flycatcher Shrike,Hemipus hirundinaceus,blgeke,LC,High_tree,No,4120000
+Gray-and-Buff Woodpecker,Hemicircus sordidus,grufer,LC,High_tree,No,3800000
+Grey-breasted Babbler,Malacopteron albogulare,grster,NT,Forest,Yes,1910000
+Malay Honeyguide,Indicator archipelagicus,maeyde,NT,High_tree,No,3280000
+Oriental Pied Hornbill,Anthracoceros albirostris,orpill,LC,Generalist,No,10700000
+White-bellied Woodpecker,Dryocopus javensis,whlier,LC,High_tree,Yes,19400000
+Chestnut-breasted Malkoha,Phaenicophaeus curvirostris,chbrha,LC,High_tree,No,5160000
+Red-naped Trogon,Harpactes kasumba,retron,NT,High_tree,No,2950000
+Rufous-crowned Babbler,Malacopteron magnum,ruower,NT,High_tree,No,3310000
+Buff-necked Woodpecker,Meiglyptes tukki,bueder,NT,Forest,Yes,3880000
+Hairy-backed Bulbul,Tricholestes criniger,hakeul,LC,Forest,Yes,3680000
+Orange-bellied Flowerpecker,Dicaeum trigonostigma,orller,LC,Generalist,No,10000000
+Golden-bellied Gerygone,Gerygone sulphurea,gollne,LC,High_tree,No,8090000
+Orange-backed Woodpecker,Chrysocolaptes validus,orcker,LC,High_tree,No,3390000
+Wrinkled Hornbill,Rhabdotorrhinus corrugatus,wrholl,EN,Forest,Yes,2980000
+Changeable Hawk Eagle,Nisaetus cirrhatus,chlele,LC,Generalist,No,15300000
+Cinnamon-rumped Trogon,Harpactes orrhophaeus,ciruon,NT,Forest,Yes,2770000
+Blue-throated Bee-eater,Merops viridis,blater,LC,Generalist,No,5260000
+Pied Triller,Lalage nigra,pileer,LC,Generalist,No,7010000
+Barred Eagle Owl,Bubo sumatranus,baglwl,LC,High_tree,No,4270000
+Asian Brown Flycatcher,Muscicapa dauurica,aswner,LC,Generalist,No,17100000
+Blue-rumped Parrot,Psittinus cyanurus,bledot,NT,High_tree,No,3540000
+Malay Banded Pitta,Hydrornis irena,madeta,NT,Forest,No,1040000
+Thick-billed Green-pigeon,Treron curvirostra,thleon,LC,High_tree,No,9970000
+Bushy-crested Hornbill,Anorrhinus galeritus,bustll,NT,Forest,Yes,3450000
+White-crowned Hornbill,Berenicornis comatus,whwnll,EN,High_tree,No,3910000
+Oriental Magpie-robin,Copsychus saularis,ormain,LC,Generalist,No,19500000
+Yellow-crowned Barbet,Psilopogon henricii,yeowet,NT,High_tree,No,3000000
+Puff-backed Bulbul,Euptilotus eutilotus,puedul,NT,High_tree,No,3750000
+Striped Wren-babbler,Kenopia striata,streer,NT,Forest,Yes,2400000
+Chestnut-bellied Malkoha,Phaenicophaeus sumatranus,chbeha,NT,High_tree,No,3580000
+Oriental Dollarbird,Eurystomus orientalis,ordord,LC,Generalist,No,32400000
+Whiskered Treeswift,Hemiprocne comata,whdtft,LC,Forest,Yes,6510000
+Amur Paradise Flycatcher,Terpsiphone incei,amdier,LC,Generalist,,6060000

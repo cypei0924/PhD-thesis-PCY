@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Write DATA_SUMMARY.md, DATA_SUMMARY.xlsx and a README.md in every dataset folder.
 
-All facts live in the DATASETS list below. Periods, time steps and value ranges were measured from the
-downloaded files (2026-09-26); descriptions of methods and use come from the papers. Edit the list and
+Facts for the INDEX.md datasets live in the DATASETS list below (checked 2026-09-26); facts for the EXPANDED_2006-2026
+entries and the October 2026 additions live in datasets_expanded.py (checked 2026-10-09). Periods, time steps and value
+ranges were measured from the downloaded files; descriptions of methods and use come from the papers. Edit the lists and
 re-run (needs openpyxl) after adding new files, e.g. the FLUXNET-CH4 downloads.
 """
 import os
@@ -11,8 +12,11 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
+from datasets_expanded import ABS, BLOCKED, CHECKED_NOT_ADDED, DUPLICATES, EXPANDED, TABLE_FIXES
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 CHECKED = "2026-09-26"
+CHECKED_EXPANDED = "2026-10-09"
 
 # status codes shown in the tables
 DL = "Downloaded"
@@ -546,7 +550,18 @@ DATASETS = [
 ]
 
 GAPS = ("No public continuous WTD series was found for Thailand (Kuan Kreng), Vietnam (U Minh), the Philippines "
-        "(Leyte Sab-a, Agusan) or Sabah (Klias); these rows of the index have no folder.")
+        "(Leyte Sab-a, Agusan) or Sabah (Klias); these rows of the index have no folder. The 2006-2026 search found papers "
+        "with water tables for Thailand (B10, C56) and Vietnam (B11), but no public series; the Philippine study (C57) has "
+        "no water-table measurements.")
+
+
+def idkey(d):
+    i = d["id"].split("-")[0]
+    return i[0], int(i[1:])
+
+
+EXPANDED_SORTED = sorted(EXPANDED, key=idkey)
+ALL = DATASETS + EXPANDED_SORTED
 
 CORRECTIONS = [
     ("A1", "Water-level series", "4 wells (implied in one dataset)", "4 separate PANGAEA datasets (908201, 908206-908208), each with its own coordinates; 20-min steps"),
@@ -565,6 +580,17 @@ CORRECTIONS = [
 ]
 
 
+def to_upload():
+    """Papers that could not be read here: closed, or open but blocked for scripts (not saved to paper/)."""
+    out = []
+    for d in ALL:
+        for p in d["papers"]:
+            a = p["access"]
+            if a in (ABS, BLOCKED) or a == "Closed" or ("block" in a.lower() and "read via" not in a and "fetched" not in a):
+                out.append((d, p))
+    return out
+
+
 def md_escape(s):
     return str(s).replace("|", "/")
 
@@ -578,45 +604,64 @@ def coord(lat, lon):
 def write_md():
     L = []
     L.append("# SE Asian peatland water-table data: what was downloaded\n")
-    L.append("Checked %s. Periods, time steps, counts and value ranges below were measured from the downloaded files; "
+    L.append("Checked %s (the %d datasets of `INDEX.md`) and %s (the %d entries of `EXPANDED_2006-2026`, October 2026 "
+             "additions included). Periods, time steps, counts and value ranges below were measured from the downloaded files; "
              "methods and uses come from the papers. `INDEX.md` is the original search table; where they disagree, this "
-             "file is the checked version (see *Corrections*).\n" % CHECKED)
+             "file is the checked version (see *Corrections*).\n" % (CHECKED, len(DATASETS), CHECKED_EXPANDED, len(EXPANDED)))
     L.append("WTD sign convention: unless stated otherwise, negative = water table below the peat surface. "
              "Value ranges are min / mean / max.\n")
 
-    L.append("## At a glance\n")
-    L.append("| ID | Dataset | Status | WTD series in the download | Period (from files) | Resolution |")
-    L.append("|---|---|---|---|---|---|")
-    for d in DATASETS:
-        w = [x for x in d["files"] if str(x["wtd"]).startswith("Yes:")]  # real series, not literature means
-        starts = [x["start"] for x in w if x["start"]]
-        ends = [x["end"] for x in w if x["end"]]
-        period = "%s to %s" % (min(starts)[:10], max(ends)[:10]) if starts else "-"
-        steps = sorted({x["step"] for x in w if x["step"]})
-        L.append("| %s | %s | %s | %s | %s | %s |" % (
-            d["id"], md_escape(d["name"]), d["status"],
-            ("%d grids" if any("grid" in x["step"] for x in w) else "%d series") % len(w) if w else "none",
-            period, md_escape("; ".join(steps)) if steps else "-"))
-    L.append("\n" + GAPS + "\n")
+    for title, group in (("At a glance: datasets of INDEX.md", DATASETS),
+                         ("At a glance: EXPANDED_2006-2026 and October 2026 additions", EXPANDED_SORTED)):
+        L.append("## %s\n" % title)
+        L.append("| ID | Dataset | Status | WTD series in the download | Period (from files) | Resolution |")
+        L.append("|---|---|---|---|---|---|")
+        for d in group:
+            w = [x for x in d["files"] if str(x["wtd"]).startswith("Yes")]  # real or modelled series, not levels or means
+            starts = [x["start"] for x in w if x["start"]]
+            ends = [x["end"] for x in w if x["end"]]
+            period = "%s to %s" % (min(starts)[:10], max(ends)[:10]) if starts else "-"
+            steps = sorted({x["step"] for x in w if x["step"]})
+            L.append("| %s | %s | %s | %s | %s | %s |" % (
+                d["id"], md_escape(d["name"]), d["status"],
+                ("%d grids" if any("grid" in x["step"] for x in w) else "%d series") % len(w) if w else "none",
+                period, md_escape("; ".join(steps)) if steps else "-"))
+        L.append("")
+    L.append(GAPS + "\n")
 
     L.append("## What you still need to do\n")
     L.append("1. **FLUXNET-CH4 (A5, A6)**: sign in at fluxnet.org, request the FLUXNET-CH4 files for ID-Pag and MY-MLM "
              "(CC-BY-4.0), put the zips in `A5_.../data/` and `A6_.../data/`, commit them, and tell me; I will check them and "
              "update this summary.")
-    L.append("2. **CIFOR (A13-14)**: data.cifor.org refused connections from the cloud. On your computer run "
-             "`python3 download_data.py A13`.")
-    L.append("3. **Papers**: PDFs are not committed (public repository). Run `python3 download_papers.py`; links that "
-             "publishers block for scripts are printed so you can save them from a browser.")
-    L.append("4. **Embargoed / on request**: A12, C1, C6, C10-11 (see the next section). No emails were sent.\n")
+    L.append("2. **CIFOR (A13-14, A18, A19, D14)**: data.cifor.org refused connections from the cloud. On your computer run "
+             "`python3 download_data.py A13 A18 A19 D14`. The two A20 DOIs (DATA.ZORCAF, DATA.F5DM1Y) are not registered; "
+             "search data.cifor.org for 'SWAMP' in a browser.")
+    L.append("3. **A34 (Zenodo)**: Zenodo rate-limited the cloud after 25 of 33 files; run `python3 download_data.py A34`.")
+    L.append("4. **Papers**: PDFs are not committed (public repository). Run `python3 download_papers.py`; links that "
+             "publishers block for scripts are printed so you can save them from a browser. The papers in *Papers to "
+             "download yourself* below could not be read here (closed or blocked); upload the PDFs if you want them checked.")
+    L.append("5. **Embargoed / on request**: A12, C1, C6, C10-11 and the EXPANDED entries marked 'No' in the next section. "
+             "No emails were sent.")
+    L.append("6. **Your table**: `UPDATES_2026-10.xlsx` (written by `write_updates.py` from your current table) has the new "
+             "rows in your layout, every cell correction with your row number and old value, the %d duplicate rows, and the "
+             "sources that were checked but not added.\n" % len(DUPLICATES))
 
     L.append("## Data availability check: papers whose data you cannot download\n")
     L.append("| ID | Paper | What the paper says | Downloadable? |")
     L.append("|---|---|---|---|")
-    for d in DATASETS:
+    for d in ALL:
         for p in d["papers"]:
             if p["da_dl"] not in ("Yes",) and not p["da_dl"].startswith("Yes") and p["da_dl"] != "n/a":
                 L.append("| %s | %s ([doi](https://doi.org/%s)) | %s | %s |" % (
                     d["id"], md_escape(p["cite"]), p["doi"], md_escape(p["da"]), md_escape(p["da_dl"])))
+    L.append("")
+
+    L.append("## Papers to download yourself\n")
+    L.append("Closed access, or open access that the publisher blocked for scripts; these were read only from the abstract.\n")
+    L.append("| ID | Paper | Access |")
+    L.append("|---|---|---|")
+    for d, p in to_upload():
+        L.append("| %s | %s ([doi](https://doi.org/%s)) | %s |" % (d["id"], md_escape(p["cite"]), p["doi"], md_escape(p["access"])))
     L.append("")
 
     L.append("## Corrections to INDEX.md\n")
@@ -626,8 +671,25 @@ def write_md():
         L.append("| %s | %s | %s | %s |" % tuple(md_escape(x) for x in c))
     L.append("")
 
+    L.append("## Your table (SEA_peatland_WTD_datasets.xlsx)\n")
+    L.append("Rows that repeat an existing entry (mark them as replicate or merge them):\n")
+    L.append("| Your ID | Same as | Note |")
+    L.append("|---|---|---|")
+    for d in DUPLICATES:
+        L.append("| %s | %s | %s |" % tuple(md_escape(x) for x in d))
+    L.append("\nThe corrections found by reading the papers and data files (%d rules in `datasets_expanded.py`, some covering "
+             "several rows) are listed cell by cell, with your row numbers and old values, in `UPDATES_2026-10.xlsx` (sheet "
+             "*Corrections*); those that concern EXPANDED rows are already applied in `EXPANDED_2006-2026.xlsx` (sheet *Changes "
+             "after reading papers*).\n" % len(TABLE_FIXES))
+    L.append("Checked and not added:\n")
+    L.append("| Item | What it is | Why it was left out |")
+    L.append("|---|---|---|")
+    for item, link, what, why in CHECKED_NOT_ADDED:
+        L.append("| [%s](%s) | %s | %s |" % (md_escape(item), link.replace(" ", "%20"), md_escape(what), md_escape(why)))
+    L.append("")
+
     L.append("## Dataset details\n")
-    for d in DATASETS:
+    for d in ALL:
         L.append("### %s: %s\n" % (d["id"], d["name"]))
         L.append("- **Folder:** `%s/`" % d["folder"])
         L.append("- **Status:** %s" % d["status"])
@@ -649,13 +711,18 @@ def write_md():
         L.append("")
 
     L.append("## Folder layout\n")
-    L.append("```\nliterature/\n  INDEX.md             original search table\n  DATA_SUMMARY.md/.xlsx  this summary\n"
-             "  download_data.py     re-downloads all public data (stdlib only)\n"
-             "  download_papers.py   downloads the open-access papers and supplements\n"
-             "  build_summary.py     regenerates this summary and the folder READMEs\n"
+    L.append("```\nliterature/\n  INDEX.md               original search table\n  DATA_SUMMARY.md/.xlsx  this summary\n"
+             "  EXPANDED_2006-2026.md/.xlsx  2006-2026 search (xlsx in the layout of your table)\n"
+             "  UPDATES_2026-10.xlsx   new rows, corrections and duplicates for your table\n"
+             "  download_data.py       re-downloads all public data (stdlib only)\n"
+             "  download_papers.py     downloads the open-access papers and supplements\n"
+             "  build_summary.py       regenerates this summary and the folder READMEs\n"
+             "  datasets_expanded.py   facts for the EXPANDED entries, corrections, duplicates (read by the scripts)\n"
+             "  build_expanded.py, format_expanded.py, write_updates.py  write the EXPANDED and UPDATES files\n"
              "  <ID>_<site>_<paper>/\n    README.md  data/  paper/ (git-ignored)\n```\n")
     L.append("Git-ignored (kept only where they were downloaded): `*.pdf`, `*/paper/`, `*/data/_large/` (files over "
-             "100 MB; none so far), `*/data/_unzipped/`.\n")
+             "100 MB; none so far), `*/data/_unzipped/`, unfinished downloads (`*.part`) and saved error pages "
+             "(`*.FAILED_*.html`).\n")
     with open(os.path.join(HERE, "DATA_SUMMARY.md"), "w") as fh:
         fh.write("\n".join(L))
 
@@ -683,7 +750,7 @@ def write_xlsx():
     ws = wb.active
     ws.title = "Files"
     rows = []
-    for d in DATASETS:
+    for d in ALL:
         for x in d["files"]:
             rows.append([d["id"], d["folder"] + "/data/" + x["file"], x["part"], x["site"], x["lat"], x["lon"], x["cover"],
                          x["content"], x["wtd"], x["start"], x["end"], x["step"], x["n"], x["miss"], x["rng"],
@@ -696,15 +763,19 @@ def write_xlsx():
 
     ws = wb.create_sheet("Datasets")
     rows = [[d["id"], d["name"], d["status"], d["folder"], ", ".join(b for a, b in d["links"]), d["license"],
-             len(d["files"]), " | ".join(d["notes"])] for d in DATASETS]
+             len(d["files"]), " | ".join(d["notes"])] for d in ALL]
     sheet(ws, ["ID", "Dataset", "Status", "Folder", "Data link(s)", "Licence", "File rows", "Notes"], rows,
           [7, 40, 26, 38, 45, 20, 9, 90])
 
     ws = wb.create_sheet("Data availability")
     rows = [[d["id"], p["cite"], "https://doi.org/" + p["doi"], p["access"], p["da"], p["da_dl"]]
-            for d in DATASETS for p in d["papers"]]
+            for d in ALL for p in d["papers"]]
     sheet(ws, ["ID", "Paper", "DOI", "Paper access", "Data availability statement", "Data downloadable?"], rows,
           [7, 45, 35, 40, 80, 22])
+
+    ws = wb.create_sheet("Papers to download")
+    sheet(ws, ["ID", "Paper", "DOI", "Access"], [[d["id"], p["cite"], "https://doi.org/" + p["doi"], p["access"]]
+                                                for d, p in to_upload()], [7, 55, 40, 70])
 
     ws = wb.create_sheet("Corrections")
     sheet(ws, ["ID", "Field", "Index said", "Checked"], [list(c) for c in CORRECTIONS], [8, 25, 35, 80])
@@ -712,7 +783,7 @@ def write_xlsx():
 
 
 def write_readmes():
-    for d in DATASETS:
+    for d in ALL:
         path = os.path.join(HERE, d["folder"])
         os.makedirs(path, exist_ok=True)
         L = ["# %s: %s\n" % (d["id"], d["name"]), "**Status:** %s\n" % d["status"]]
@@ -744,4 +815,4 @@ if __name__ == "__main__":
     write_md()
     write_xlsx()
     write_readmes()
-    print("wrote DATA_SUMMARY.md, DATA_SUMMARY.xlsx and %d folder READMEs" % len(DATASETS))
+    print("wrote DATA_SUMMARY.md, DATA_SUMMARY.xlsx and %d folder READMEs" % len(ALL))

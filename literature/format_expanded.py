@@ -1,23 +1,25 @@
 #!/usr/bin/env python3
-"""Write EXPANDED_2006-2026.xlsx in the layout of Sheet1 of SEA_peatland_WTD_datasets.xlsx (one row per site,
-IDs continuing that table: A15+, B4+, C15+, D9+). Row facts come from build_expanded.py; the sheet "ID mapping"
-links each new ID to the ID used in EXPANDED_2006-2026.md.
+"""Write EXPANDED_2006-2026.xlsx in the layout of SEA_peatland_WTD_datasets.xlsx (one row per site, IDs continuing
+that table: A15+, B4+, C15+, D9+, and the October 2026 additions A34, C60-C65, D15). Row facts come from
+build_expanded.py; the corrections in TABLE_FIXES (datasets_expanded.py), found by reading the papers and data files,
+are written over them and listed in the sheet "Changes after reading papers". The sheet "ID mapping" links each new ID
+to the ID used in EXPANDED_2006-2026.md.
 
 usage: python3 format_expanded.py SEA_peatland_WTD_datasets.xlsx [OUT.xlsx]
 The table is used as the template (theme, fonts, column widths, header and colour legend), so it is not kept in
-this repository; only its header row and legend are carried over.
+this repository; only its header row and legend are carried over. write_updates.py imports the entries from here.
 """
 import copy
 import os
 import sys
 
 import openpyxl
+import openpyxl.comments
 
 from build_expanded import APERS_SITES, ROWS
+from datasets_expanded import TABLE_FIXES
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE = sys.argv[1]
-OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "EXPANDED_2006-2026.xlsx")
 D = "https://doi.org/"
 
 # ---------------------------------------------------------------- entries
@@ -26,8 +28,8 @@ D = "https://doi.org/"
 E = []
 
 
-def add(new, old, cat, pubs, links, data, rows, dup=""):
-    E.append(dict(new=new, old=old, cat=cat, pubs=pubs, links=links, data=data, rows=rows, dup=dup))
+def add(new, old, cat, pubs, links, data, rows, dup="", window="", via=""):
+    E.append(dict(new=new, old=old, cat=cat, pubs=pubs, links=links, data=data, rows=rows, dup=dup, window=window, via=via))
 
 
 # ---- A: public repositories
@@ -377,6 +379,60 @@ add("D14", "D7", None, "Couwenberg et al. 2010, GCB; Couwenberg & Hooijer 2013, 
     [("Meta-analyses with site-level WTD", "Southeast Asia", "—", "See supplement", "See supplement", "—", "Multiple land uses",
       "Literature compilation", "Site mean", "From literature", "Many sites", "")], "Includes your D7 (Prananto 2020)")
 
+
+# ---- October 2026 additions (IDs continue your updated table: A34, C60-C65, D15)
+OCT = "2016-2026 (October 2026 search)"
+add("A34", "new", None, "Kagawa et al. 2026, Biogeosciences 23", D + "10.5194/bg-23-2119-2026", D + "10.5281/zenodo.19159833",
+    [("Bengkalis Island north-west coast, channel gauge WP1 (peat landslide area)", "Indonesia", "Riau (Bengkalis Island)", "≈1.60",
+      "≈102.02", "dataset (UTM 48N survey files)", "Coastal peat with peat mass movements", "2014/12/01-2015/01/31", "10 min",
+      "HOBO U-20 logger in a PVC well recording the CHANNEL water level behind a weir (m, elevation; not peat WTD)", 1, "1 channel gauge"),
+     ("Bengkalis survey line, one-day water-level survey", "Indonesia", "Riau (Bengkalis Island)", "1.59-1.60", "102.02",
+      "dataset (UTM 48N)", "Coastal peat", "2013/08/24", "One survey", "Water-level elevations (m) at 30 points", 1, "30 points")],
+    "Same island as C35 and the B9 SESAME station at Dompas", OCT, "Zenodo files; full text")
+add("C60", "new", None, "Cassiophea et al. 2025, IOP Conf. Ser. Earth Environ. Sci. 1542", D + "10.1088/1755-1315/1542/1/012023", "—",
+    [("RePEAT (rehabilitated reference site)", "Indonesia", "Central Kalimantan", "Map only (Fig. 1)", "Map only (Fig. 1)", "—",
+      "Rehabilitated peatland, permanently moist", "2024/11-2025/04", "Hourly to daily (IoT)",
+      "Pressure transducer in a 2-3 m PVC well (solar, LTE); monthly manual check", 1, ""),
+     ("CIMTROP Lab Forest", "Indonesia", "Central Kalimantan", "Map only (Fig. 1)", "Map only (Fig. 1)", "—",
+      "Little-disturbed research forest", "2024/11-2025/04", "Hourly to daily (IoT)", "", 1, ""),
+     ("Ruslan Canal, Sebangau NP", "Indonesia", "Central Kalimantan", "Map only (Fig. 1)", "Map only (Fig. 1)", "—",
+      "Previously drained, canal-blocked", "2024/11-2025/04", "Hourly to daily (IoT)", "", 1, ""),
+     ("KHDTK (Tumbang Nusa forest)", "Indonesia", "Central Kalimantan", "Map only (Fig. 1)", "Map only (Fig. 1)", "—",
+      "Forested peatland under restoration (WTD -40 to +25 cm)", "2024/11-2025/04", "Hourly to daily (IoT)", "", 1, ""),
+     ("KM 16", "Indonesia", "Central Kalimantan", "Map only (Fig. 1)", "Map only (Fig. 1)", "—",
+      "Former degraded shrubland, canal-blocked (ponded +20 to +40 cm)", "2024/11-2025/04", "Hourly to daily (IoT)", "", 1, "")],
+    "KHDTK = the Tumbang Nusa forest of your C20/C23; co-author of A11", OCT, "full text")
+add("C61", "new", None, "Hikouei et al. 2025, Groundwater for Sustainable Development 29", D + "10.1016/j.gsd.2025.101413",
+    "Not shared (authors have no permission)",
+    [("KFCP dipwell network, ex-Mega Rice Project", "Indonesia", "Central Kalimantan (Kapuas)", "See B6", "See B6", "—",
+      "Degraded, drained peat dome", "2011-2019", "Monthly manual", "Dipwells; MODFLOW model with XGBoost analysis of residuals", 1,
+      "265 dipwells")], "Extends your B6 to 2019; same lead author as D12", OCT, "abstract (closed)")
+add("C62", "new", None, "Yananto et al. 2021, Int. J. Remote Sens. Earth Sci. 18(2)", "https://ejournal.brin.go.id/ijreses/article/view/13780", "—",
+    [("SIPALAGA stations near the Rokan River", "Indonesia", "Riau (Rokan)", "See paper", "See paper", "—", "Acacia plantation",
+      "See paper", "See paper", "SIPALAGA GWL regressed on Sentinel-1 VV backscatter (r = -0.648)", "See paper", "")],
+    "SIPALAGA stations (your B1, B13)", OCT, "article page")
+add("C63", "new", None, "Sutikno et al. 2019, MATEC Web Conf. 276", D + "10.1051/matecconf/201927606003", "—",
+    [("Canal block transect", "Indonesia", "Riau (Tebing Tinggi Island)", "See paper", "See paper", "—", "Drained peat with a canal block",
+      "See paper", "See paper", "Dipwells at 20, 70, 120, 170 and 220 m from the canal", 1, "5 dipwells")],
+    "Same group and island as your C4 and C32", OCT, "abstract (publisher blocked)")
+add("C64", "new", None, "Putra et al. 2024, Journal of Tropical Silviculture 15", D + "10.29244/j-siltrop.15.01.65-69", "—",
+    [("Tangkit Baru village", "Indonesia", "Jambi (Muaro Jambi, Sungai Gelam)", "Map only", "Map only", "—",
+      "Drained pineapple farms (11 canals, 1-2 m deep)", "2023/09-2023/11", "IoT logger (interval not stated) + manual",
+      "Submersible pressure sensor (ESP32, Telkom IoT) vs measuring stick in the same dipwell", 1, "1 dipwell"),
+     ("Pematang Rahim village", "Indonesia", "Jambi (Tanjung Jabung Timur, Mendahara Ulu)", "Map only", "Map only", "—",
+      "Peat next to the Sungai Buluh protection forest; oil palm", "2023/09-2023/11", "IoT logger (interval not stated) + manual", "", 1,
+      "1 dipwell")], "Pematang Rahim borders the forest of A17", OCT, "full text")
+add("C65", "new", None, "Sekarano et al. 2026, SSRN preprint", D + "10.2139/ssrn.7439436", "—",
+    [("26 GWL stations, Pulang Pisau and Palangka Raya", "Indonesia", "Central Kalimantan", "See paper", "See paper", "—",
+      "Degraded and restored peat", "2018/12-2022/12", "21,954 observations (about daily, with gaps)",
+      "Station GWL vs Sentinel-2 bands and moisture indices; LSTM (R2 0.89, RMSE 0.13 m)", 26, "")],
+    "Station network not named; probably SIPALAGA (your B1)", OCT, "abstract")
+add("D15", "new", None, "Irfan et al. (submitted to Science of the Total Environment)", "—", D + "10.5281/zenodo.23008826",
+    [("South Sumatra peat units (KHG): modelled GWL maps", "Indonesia", "South Sumatra", "Grid", "Grid", "1 km grid (EPSG:32748)",
+      "All peat", "2019/04/01-13 (wet); 2019/11/13-25 (dry)", "Two composites",
+      "Ridge regression of Sentinel-1, GPM and SMAP, calibrated on SIPALAGA GWL (field data not included)", "—", "")],
+    "Same group as your B9 and C42", OCT, "Zenodo files and README")
+
 UPDATES = [
     ("A3 / A4", "B4: Sulaiman et al. 2023 report daily GWL at the UF location from 1993/09 to 2019/12."),
     ("A2", "Apers et al. 2022 list two Hoyt et al. 2019 records: Damit dome 2012 (4.405, 114.363) and Mendaram dome 2013-2014 "
@@ -392,78 +448,219 @@ UPDATES = [
              "Sabah (Klias) still has only geophysical WT estimates."),
 ]
 
+E.sort(key=lambda e: (e["new"][0], int(e["new"][1:])))
+
+# ---------------------------------------------------------------- corrections from reading the papers and files
+COLS = ["ID", "Source publication(s)", "Publication link(s)", "Site / dataset", "Country", "Province / state", "Latitude",
+        "Longitude", "Source", "Land use / condition", "Period", "Temporal resolution", "Method / accuracy", "Sites", "Wells",
+        "Data link"]
+ROW_COLS = COLS[3:15]                       # the 12 per-site cells, in the order of the row tuples
+ENTRY_COLS = {"Source publication(s)": "pubs", "Publication link(s)": "links", "Data link": "data"}
+LABELS = {"can use": "can", "replicate": "rep", "on request": "req", "not accessible": "na"}
+NAMES = {v: k for k, v in LABELS.items()}
+MATCH = ("Site / dataset", "Province / state", "Land use / condition", "Method / accuracy")  # where a fix's row text is looked for
+KEY_COLS = (11, 12, 14)                     # Period, Temporal resolution, Sites: dark red in the template
+
+
+def colour(value):
+    """Legend key of a 'Colour' fix such as 'replicate (= your A28)'."""
+    for label, key in LABELS.items():
+        if str(value).lower().startswith(label):
+            return key
+    raise ValueError("a Colour fix must start with a legend label: %r" % (value,))
+
+
+def same(a, b):
+    return str(a if a is not None else "").strip() == str(b if b is not None else "").strip()
+
+
+def pick_rows(texts, spec):
+    """Indices of the rows a fix applies to. texts[k] = (site cell, province + land use + method cells) of row k;
+    spec '' = first row, 'text' = first row containing text, '*text' = every row containing text, '*' = every row.
+    The site cells are searched first; the other cells only if no site matches."""
+    if not spec:
+        return [0] if texts else []
+    every, needle = spec.startswith("*"), spec.lstrip("*").lower()
+    for part in (0, 1):
+        hits = [k for k, t in enumerate(texts) if needle in str(t[part] or "").lower()]
+        if hits:
+            return hits if every else hits[:1]
+    return []
+
+
+def fixes_for(scope, fixes=TABLE_FIXES):
+    """The fixes that apply to 'table' (your table) or 'expanded' (EXPANDED_2006-2026.xlsx), as 6-tuples."""
+    out = []
+    for fx in fixes:
+        fx = tuple(fx) + ("",) * (6 - len(fx))
+        if fx[5] in ("", scope):
+            out.append(fx)
+    return out
+
+
+def apply_fixes(entries, fixes=None):
+    """Write the fixes into the entries; return the cells that changed as (ID, site, column, old, new, source)."""
+    by_id = {e["new"]: e for e in entries}
+    changes = []
+    for i, spec, col, new, src, _ in fixes_for("expanded") if fixes is None else fixes:
+        e = by_id.get(i)
+        if e is None:
+            continue                        # a row of your table that EXPANDED does not have
+        if col == "New row":
+            if not any(same(r[0], new[0]) for r in e["rows"]):
+                e["rows"].append(tuple(new))
+                changes.append((i, new[0], col, "", " | ".join(str(x) for x in new), src))
+                e.setdefault("marks", []).append((len(e["rows"]) - 1, "Site / dataset", None, src))
+            continue
+        texts = [(r[0], " ".join(str(r[ROW_COLS.index(c)]) for c in MATCH[1:])) for r in e["rows"]]
+        ks = pick_rows(texts, spec)
+        if col in ("Colour",) or col in ENTRY_COLS:
+            ks = ks[:1]                     # entry-level cells: once
+        for k in ks:
+            if col == "Colour":
+                old = NAMES.get(e["cat"], "no fill")
+                if old == NAMES[colour(new)]:
+                    continue
+                e["cat"] = colour(new)
+            elif col in ENTRY_COLS:
+                old = e[ENTRY_COLS[col]]
+                e[ENTRY_COLS[col]] = new
+            else:
+                row = list(e["rows"][k])
+                j = ROW_COLS.index(col)
+                old, row[j] = row[j], new
+                e["rows"][k] = tuple(row)
+            if not same(old, new):
+                changes.append((i, e["rows"][k][0], col, old, new, src))
+                e.setdefault("marks", []).append((0 if col in ENTRY_COLS or col == "Colour" else k,
+                                                  "ID" if col == "Colour" else col, old, src))
+    changes.sort(key=lambda c: (c[0][0], int(c[0][1:])))  # by ID; within an ID, in the order of TABLE_FIXES
+    return changes
+
+
 # ---------------------------------------------------------------- write
-wb = openpyxl.load_workbook(TEMPLATE)
-for name in wb.sheetnames:
-    if name != "Sheet1":
-        del wb[name]
-ws = wb["Sheet1"]
+def load_template(path):
+    """The user's table as a template: the sheet whose first row is the column header and which has the colour legend
+    (other sheets are removed), the legend fills (found by their labels) and the fonts of the first data row."""
+    wb = openpyxl.load_workbook(path)
+    best = None
+    for ws in wb.worksheets:
+        if [str(ws.cell(1, c).value or "").strip() for c in range(1, len(COLS) + 1)] != COLS:
+            continue
+        legend = {}
+        for r in range(2, ws.max_row + 1):
+            label = str(ws.cell(r, 2).value or "").strip().lower()
+            if label in LABELS and ws.cell(r, 1).value is None and ws.cell(r, 1).fill.fill_type:
+                legend[LABELS[label]] = (r, ws.cell(r, 2).value)
+        if best is None or len(legend) > len(best[1]):
+            best = (ws, legend)
+    if best is None or len(best[1]) < len(LABELS):
+        sys.exit("%s: no sheet with the SEA_peatland_WTD_datasets header row and colour legend" % path)
+    ws, legend = best
+    for other in list(wb.worksheets):
+        if other is not ws:
+            wb.remove(other)
+    link = copy.copy(ws["P2"].font)
+    if not link.u:
+        link = openpyxl.styles.Font(name=ws["D2"].font.name, sz=ws["D2"].font.sz, color="FF0000FF", u="single")
+    st = dict(fills={k: copy.copy(ws.cell(r, 1).fill) for k, (r, _) in legend.items()},
+              legend=[(k, legend[k][1]) for k in ("can", "rep", "req", "na")],
+              head=copy.copy(ws["A1"].font), base=copy.copy(ws["D2"].font), key=copy.copy(ws["K2"].font), link=link,
+              align=copy.copy(ws["D2"].alignment))
+    ws.delete_rows(2, ws.max_row)
+    for k in list(ws.row_dimensions):       # delete_rows does not shift row heights
+        if k > 1:
+            del ws.row_dimensions[k]
+    return wb, ws, st
 
-FILLS = {"can": copy.copy(ws["A83"].fill), "rep": copy.copy(ws["A84"].fill),
-         "req": copy.copy(ws["A85"].fill), "na": copy.copy(ws["A86"].fill)}
-LEGEND = [(k, ws.cell(r, 2).value) for k, r in (("can", 83), ("rep", 84), ("req", 85), ("na", 86))]
-BASE_FONT = copy.copy(ws["D2"].font)       # Calibri 11, theme text colour
-LINK_FONT = copy.copy(ws["P2"].font)       # blue, underlined
-KEY_FONT = copy.copy(ws["K2"].font)        # dark red: Period, Temporal resolution, Sites
-KEY_COLS = (11, 12, 14)
-ALIGN = copy.copy(ws["D2"].alignment)      # vertical centre, as in the template
-NOFILL = copy.copy(ws["A80"].fill)
 
-ws.delete_rows(2, ws.max_row)
-for k in list(ws.row_dimensions):          # delete_rows does not shift row heights
-    if k > 1:
-        del ws.row_dimensions[k]
-r = 2
-for e in E:
-    for i, row in enumerate(e["rows"]):
-        site, country, prov, lat, lon, src, land, period, res, method, sites, wells = row
-        vals = [e["new"] if i == 0 else None, e["pubs"] if i == 0 else None, e["links"] if i == 0 else None,
-                site, country, prov, lat, lon, src, land, period, res, method,
-                sites if sites != "" else None, wells or None, e["data"] if i == 0 else None]
-        for c, v in enumerate(vals, 1):
-            cell = ws.cell(r, c, v)
-            cell.font = copy.copy(KEY_FONT if c in KEY_COLS else BASE_FONT)
-            cell.alignment = copy.copy(ALIGN)
-            cell.fill = copy.copy(FILLS[e["cat"]]) if e["cat"] else copy.copy(NOFILL)
-            if c in (3, 16) and isinstance(v, str) and v.startswith("http"):
-                cell.hyperlink = v.split(" ")[0]
-                cell.font = copy.copy(LINK_FONT)
+def write_rows(ws, st, entries, r=2):
+    """Write entries in the template layout from row r: ID, publications and data link on the first row of each entry;
+    the entry's colour on its filled cells, as in the template. Returns the next free row."""
+    for e in entries:
+        e["xlrow"] = r
+        for i, row in enumerate(e["rows"]):
+            vals = [e["new"] if i == 0 else None, e["pubs"] if i == 0 else None, e["links"] if i == 0 else None]
+            vals += list(row[:10]) + [row[10] if row[10] != "" else None, row[11] or None, e["data"] if i == 0 else None]
+            for c, v in enumerate(vals, 1):
+                cell = ws.cell(r, c, v)
+                cell.font = copy.copy(st["key"] if c in KEY_COLS else st["base"])
+                cell.alignment = copy.copy(st["align"])
+                if e["cat"] and v is not None:
+                    cell.fill = copy.copy(st["fills"][e["cat"]])
+                if c in (3, 16) and isinstance(v, str) and v.startswith("http"):
+                    cell.hyperlink = v.split(" ")[0]
+                    cell.font = copy.copy(st["link"])
+            r += 1
+    return r
+
+
+def mark_changes(ws, entries):
+    """A comment on every cell that a fix changed: the source, and the value it replaced."""
+    for e in entries:
+        for k, col, old, src in e.get("marks", []):
+            if col == "Site / dataset" and old is None:
+                text = "Row added after reading the papers (%s)." % src
+            else:
+                text = "Changed after reading the papers (%s). Was: %s" % (src, "(empty)" if old in (None, "") else old)
+            c = ws.cell(e["xlrow"] + k, COLS.index(col) + 1)
+            c.comment = openpyxl.comments.Comment(text, "literature check 2026-10", width=320, height=110)
+
+
+def write_legend(ws, st, r):
+    for k, label in st["legend"]:
+        ws.cell(r, 1).fill = copy.copy(st["fills"][k])
+        ws.cell(r, 2, label).font = copy.copy(st["base"])
         r += 1
-r += 3
-for k, label in LEGEND:
-    ws.cell(r, 1).fill = copy.copy(FILLS[k])
-    ws.cell(r, 2, label).font = copy.copy(BASE_FONT)
-    r += 1
 
-# ID mapping sheet (keeps what the user's layout has no column for)
-old = OLD
-NOTE_FIX = [("(see C45)", "(see C47)"), ("Hikouei et al. 2023, D6)", "Hikouei et al. 2023, D12)"),
-            ("SATREPS IJ-1 (B4)", "SATREPS IJ-1 (B5)"), ("in INDEX row C10-11", "in your C10/C11")]
-wm = wb.create_sheet("ID mapping")
-hdr = ["New ID", "EXPANDED ID", "Colour", "Duplicate of / related to (your Sheet1)", "Publication window", "Verified via", "Notes"]
-labels = dict(LEGEND)
-wm.append(hdr)
-for e in E:
-    o = old.get(e["old"])
-    note = o[12] if o and o[12] else ""
-    for a, b in NOTE_FIX:                   # notes were written with EXPANDED / INDEX IDs
-        note = note.replace(a, b)
-    wm.append([e["new"], e["old"], labels.get(e["cat"], "—") if e["cat"] else "—", e["dup"] or "—",
-               o[10] if o else "2016-2026", o[11] if o else "Apers 2022 Table B1", note])
-wu = wb.create_sheet("Updates to your table")
-wu.append(["Your entry", "Update"])
-for u in UPDATES:
-    wu.append(list(u))
-for sh, widths in ((wm, [8, 12, 14, 48, 30, 26, 70]), (wu, [10, 130])):
+
+def plain_sheet(wb, st, title, header, rows, widths):
+    sh = wb.create_sheet(title)
+    sh.append(header)
     for c in sh[1]:
-        c.font = copy.copy(ws["A1"].font)
+        c.font = copy.copy(st["head"])
+    for row in rows:
+        sh.append(["" if v is None else v for v in row])
     for row in sh.iter_rows(min_row=2):
         for c in row:
-            c.font = copy.copy(BASE_FONT)
+            c.font = copy.copy(st["base"])
             c.alignment = openpyxl.styles.Alignment(vertical="center", wrap_text=True)
     for i, w in enumerate(widths, 1):
         sh.column_dimensions[openpyxl.utils.get_column_letter(i)].width = w
-wb.active = 0
-wb.properties.lastModifiedBy = None
-wb.save(OUT)
-print("entries", len(E), "rows", sum(len(e["rows"]) for e in E), "->", OUT)
+    sh.freeze_panes = "A2"
+    return sh
+
+
+def main(template, out):
+    changes = apply_fixes(E)
+    wb, ws, st = load_template(template)
+    write_legend(ws, st, write_rows(ws, st, E) + 3)
+    mark_changes(ws, E)
+
+    # ID mapping (keeps what the template layout has no column for)
+    NOTE_FIX = [("(see C45)", "(see C47)"), ("Hikouei et al. 2023, D6)", "Hikouei et al. 2023, D12)"),
+                ("SATREPS IJ-1 (B4)", "SATREPS IJ-1 (B5)"), ("in INDEX row C10-11", "in your C10/C11")]
+    labels = dict(st["legend"])
+    rows = []
+    for e in E:
+        o = OLD.get(e["old"])
+        note = o[12] if o and o[12] else ""
+        for a, b in NOTE_FIX:               # notes were written with EXPANDED / INDEX IDs
+            note = note.replace(a, b)
+        rows.append([e["new"], e["old"], labels.get(e["cat"], "—") if e["cat"] else "—", e["dup"] or "—",
+                     e["window"] or (o[10] if o else "2016-2026"), e["via"] or (o[11] if o else "Apers 2022 Table B1"), note])
+    plain_sheet(wb, st, "ID mapping", ["New ID", "EXPANDED ID", "Colour", "Duplicate of / related to (your table)",
+                                       "Publication window", "Verified via", "Notes"], rows, [8, 12, 14, 48, 30, 26, 70])
+    plain_sheet(wb, st, "Updates to your table", ["Your entry", "Update"], [list(u) for u in UPDATES], [10, 130])
+    plain_sheet(wb, st, "Changes after reading papers", ["ID", "Row (site)", "Column", "Old value", "New value", "Source"],
+                [list(c) for c in changes], [7, 40, 20, 40, 60, 40])
+    wb.active = 0
+    wb.properties.lastModifiedBy = None
+    wb.save(out)
+    print("entries %d, rows %d, changed cells %d -> %s" % (len(E), sum(len(e["rows"]) for e in E), len(changes), out))
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        sys.exit(__doc__)
+    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "EXPANDED_2006-2026.xlsx"))

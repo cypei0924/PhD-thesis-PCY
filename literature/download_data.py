@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Download the public WTD datasets listed in INDEX.md into literature/<folder>/data/.
+"""Download the public WTD datasets listed in INDEX.md and EXPANDED_2006-2026.xlsx into literature/<folder>/data/.
 
 Usage (from anywhere, Python 3.8+, standard library only):
     python3 download_data.py            # everything
     python3 download_data.py A3 D1      # only folders whose name starts with these IDs
 
 Files that already exist with the expected size are skipped, so re-running is safe.
-Nothing is ever deleted. Files over 100 MB go to data/_large/ (git-ignored).
+Nothing is ever deleted. Files over 100 MB go to data/_large/ (git-ignored); files over 5 GB are listed, not fetched.
 Datasets that need a login (FLUXNET-CH4) or are embargoed are listed but not fetched.
 """
 import json
@@ -19,6 +19,7 @@ import urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36"
 LARGE = 100 * 1024 * 1024
+HUGE = 5 * 1024 ** 3
 
 # folder -> list of sources; each source is resolved to (filename, url, size or None)
 MANIFEST = {
@@ -58,6 +59,39 @@ MANIFEST = {
         ("url", "Ledger2023_DataSheet2.XLSX", "https://www.frontiersin.org/api/v4/articles/1182100/file/DataSheet2.XLSX/1182100_supplementary-materials_datasheets_2_xlsx/1"),
     ],
     "D1_SEA_WTD_model_Hooijer2026": [("mendeley", "69mbg22fxf")],
+    # ---- EXPANDED_2006-2026.xlsx (IDs continue SEA_peatland_WTD_datasets.xlsx)
+    "A15_Maludam_Naman_Tang2020_Nishina2023": [("figshare", "25299358")],
+    "A16_Maludam_Tang2018": [("zenodo", "1161966")],
+    "A17_Jambi_Smallholdings_WarrenThomas2022": [("dryad", "10.5061/dryad.rr4xgxd9v")],
+    # data.cifor.org refused connections from the cloud workspace; run this locally
+    "A18_CentralKalimantan_Swails2021": [("dataverse", "https://data.cifor.org", "doi:10.17528/CIFOR/DATA.00201")],
+    "A19_Jambi_CIFOR_Comeau2016": [
+        ("dataverse", "https://data.cifor.org", "doi:10.17528/CIFOR/DATA.00330"),
+        ("dataverse", "https://data.cifor.org", "doi:10.17528/CIFOR/DATA.00331"),
+        ("dataverse", "https://data.cifor.org", "doi:10.17528/CIFOR/DATA.00290"),
+        ("dataverse", "https://data.cifor.org", "doi:10.17528/CIFOR/DATA.00316"),
+    ],
+    "A20_CentralKalimantan_SWAMP_CIFOR": [
+        ("dataverse", "https://data.cifor.org", "doi:10.17528/CIFOR/DATA.ZORCAF"),
+        ("dataverse", "https://data.cifor.org", "doi:10.17528/CIFOR/DATA.F5DM1Y"),
+    ],
+    "A21_NorthSelangor_Cooper2020": [
+        ("url", "Cooper2020_SupplementaryData1.xlsx", "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-020-14298-w/MediaObjects/41467_2020_14298_MOESM2_ESM.xlsx"),
+        ("url", "Cooper2020_SourceData.xlsx", "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fs41467-020-14298-w/MediaObjects/41467_2020_14298_MOESM4_ESM.xlsx"),
+    ],
+    "A22_Badas_Canal_Somers": [("hydroshare", "3953b24e0238467980a226c72cfc360e")],
+    # only the SE Asia files (SEA) and the documentation; the daily SEA image files are 7.6-7.8 GB each
+    "D9_PEATCLSM_Trop_Apers2022": [("zenodo", "6011689", "", r"SEA|_doc")],
+    "D13_Kalimantan_FireRisk_Mahdiyasa": [("zenodo", "17907349")],
+    "D14_CIFOR_WTD_Compilation_Couwenberg": [("dataverse", "https://data.cifor.org", "doi:10.17528/CIFOR/DATA.00291")],
+    # ---- rows added in SEA_peatland_WTD_datasets.xlsx after EXPANDED (your A23-A33); only A23 has new public data
+    "A23_Sebangau_Putra2021": [("eprints", "https://archive.researchdata.leeds.ac.uk/832/")],
+    # ---- found in the October 2026 search (new rows for your table)
+    "A34_Bengkalis_Kagawa2026": [("zenodo", "19159832")],
+    # figshare answers scripts with a bot check; if this fails, save MonthlyData250816.xlsx from the browser
+    "D4_SEA_GWL_monthly_Hirano2025": [("figshare", "30761072")],
+    "D11_CanalWTD_Vernimmen2020_Dadap2021": [("mendeley", "7nnf495jbw")],
+    "D15_SouthSumatra_GWL_model_Irfan2026": [("zenodo", "23008826")],
 }
 
 
@@ -77,7 +111,26 @@ def resolve(src):
         return [(src[1], src[2], None)]
     if kind == "zenodo":
         d = get_json("https://zenodo.org/api/records/" + src[1])
-        return [(f["key"], f["links"]["self"], f["size"]) for f in d["files"]]
+        files = [(f["key"], f["links"]["self"], f["size"]) for f in d["files"]]
+        if len(src) > 3:
+            import re
+            files = [f for f in files if re.search(src[3], f[0])]
+        return files
+    if kind == "dryad":
+        base = "https://datadryad.org"
+        d = get_json(base + "/api/v2/datasets/" + urllib.parse.quote("doi:" + src[1], safe=""))
+        v = get_json(base + d["_links"]["stash:version"]["href"] + "/files")
+        return [(f["path"], base + f["_links"]["stash:download"]["href"], f["size"]) for f in v["_embedded"]["stash:files"]]
+    if kind == "eprints":
+        # EPrints repositories (e.g. Leeds) list each file as <record>/<n>/<name> on the landing page
+        import re
+        with get(src[1]) as r:
+            page = r.read().decode("utf8", "replace")
+        links = sorted(set(re.findall(r'href="(%s\d+/[^"/]+)"' % re.escape(src[1]), page)))
+        return [(urllib.parse.unquote(u.rsplit("/", 1)[1]), u, None) for u in links]
+    if kind == "hydroshare":
+        d = get_json("https://www.hydroshare.org/hsapi/resource/%s/files/" % src[1])
+        return [(f["url"].split("/data/contents/")[1], f["url"].replace("http://", "https://"), f["size"]) for f in d["results"]]
     if kind == "figshare":
         d = get_json("https://api.figshare.com/v2/articles/" + src[1])
         return [(f["name"], f["download_url"], f["size"]) for f in d["files"]]
@@ -133,6 +186,9 @@ def download_zip_member(name, url, data_dir):
 
 
 def download(name, url, size, data_dir):
+    if size and size > HUGE:
+        print("   over 5 GB, not fetched: %s (%.1f GB) %s" % (name, size / 1024 ** 3, url))
+        return
     dest_dir = os.path.join(data_dir, "_large") if size and size > LARGE else data_dir
     os.makedirs(dest_dir, exist_ok=True)
     dest = os.path.join(dest_dir, name.replace("/", "_"))
@@ -172,7 +228,7 @@ def main(ids):
         print(folder)
         for src in sources:
             data_dir = os.path.join(HERE, folder, "data")
-            if src[0] == "zenodo" and len(src) > 2:
+            if src[0] == "zenodo" and len(src) > 2 and src[2]:
                 data_dir = os.path.join(data_dir, src[2])
             try:
                 files = resolve(src)

@@ -1,0 +1,10 @@
+﻿metric,value,role,interpretation
+spatial_pooled_rmse_m,0.31701206626368394,global_validation_reference,Do not treat as pixelwise uncertainty; use as model-generalization context.
+spatial_pooled_mae_m,0.25336625002030866,global_validation_reference,Do not treat as pixelwise uncertainty; use as model-generalization context.
+spatial_pooled_r2,0.4610673221109026,global_validation_reference,Do not treat as pixelwise uncertainty; use as model-generalization context.
+spatial_pooled_bias_m,-0.022381029137392927,global_validation_reference,Do not treat as pixelwise uncertainty; use as model-generalization context.
+spatial_macro_rmse_m,0.29563589292880493,global_validation_reference,Do not treat as pixelwise uncertainty; use as model-generalization context.
+spatial_macro_mae_m,0.24650485873035244,global_validation_reference,Do not treat as pixelwise uncertainty; use as model-generalization context.
+spatial_macro_r2,0.1955776465546849,global_validation_reference,Do not treat as pixelwise uncertainty; use as model-generalization context.
+heldout_year_r2,0.613184,global_validation_reference,Do not treat as pixelwise uncertainty; use as model-generalization context.
+forward_chain_r2,0.400152,global_validation_reference,Do not treat as pixelwise uncertainty; use as model-generalization context.
